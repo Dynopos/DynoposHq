@@ -388,15 +388,8 @@
   // endpoint anda dari formspree.io
   // Contoh: 'https://formspree.io/f/xabcdefg'
   // ─────────────────────────────────────────────
-  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzdweljo';
+  const FORMSUBMIT_EMAIL = 'borhanlimapos@gmail.com';
 
-  // Tunjuk notis setup jika endpoint belum ditetapkan
-  if (FORMSPREE_ENDPOINT.startsWith('TUKAR')) {
-    const notice = document.createElement('div');
-    notice.style.cssText = 'background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:12px 16px;margin:0 0 16px;font-size:13px;color:#92400e;';
-    notice.innerHTML = '<strong>&#9888; Tetapan Diperlukan:</strong> Buka fail feedback.html dan tukar <code>FORMSPREE_ENDPOINT</code> dengan endpoint Formspree anda supaya maklum balas dihantar ke email. <a href="https://formspree.io" target="_blank" style="color:#92400e;text-decoration:underline;">Daftar percuma di formspree.io</a>';
-    document.querySelector('.page-title').after(notice);
-  }
 
   const RATING_LABELS = {
     1: 'Tidak Berpuashati',
@@ -522,20 +515,19 @@
       '👍 Akan Syorkan':   recLabel,
     };
 
-    // ── Hantar ke Formspree (email ke anda) ──
+    // ── Hantar ke Formsubmit (email ke anda) ──
     let emailSent = false;
-    if (!FORMSPREE_ENDPOINT.startsWith('TUKAR')) {
-      try {
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        emailSent = res.ok;
-        if (!res.ok) console.warn('Formspree error:', await res.text());
-      } catch (err) {
-        console.warn('Gagal hantar ke Formspree:', err);
-      }
+    try {
+      const res = await fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ ...payload, _captcha: 'false' }),
+      });
+      const data = await res.json();
+      emailSent = data.success === 'true' || data.success === true;
+      if (!emailSent) console.warn('Formsubmit error:', data);
+    } catch (err) {
+      console.warn('Gagal hantar ke Formsubmit:', err);
     }
 
     // ── Simpan juga dalam localStorage (backup untuk admin dashboard) ──
