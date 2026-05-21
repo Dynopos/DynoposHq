@@ -383,6 +383,21 @@
 </footer>
 
 <script>
+  // ─────────────────────────────────────────────
+  // TETAPAN — tukar FORMSPREE_ENDPOINT dengan
+  // endpoint anda dari formspree.io
+  // Contoh: 'https://formspree.io/f/xabcdefg'
+  // ─────────────────────────────────────────────
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzdweljo';
+
+  // Tunjuk notis setup jika endpoint belum ditetapkan
+  if (FORMSPREE_ENDPOINT.startsWith('TUKAR')) {
+    const notice = document.createElement('div');
+    notice.style.cssText = 'background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:12px 16px;margin:0 0 16px;font-size:13px;color:#92400e;';
+    notice.innerHTML = '<strong>&#9888; Tetapan Diperlukan:</strong> Buka fail feedback.html dan tukar <code>FORMSPREE_ENDPOINT</code> dengan endpoint Formspree anda supaya maklum balas dihantar ke email. <a href="https://formspree.io" target="_blank" style="color:#92400e;text-decoration:underline;">Daftar percuma di formspree.io</a>';
+    document.querySelector('.page-title').after(notice);
+  }
+
   const RATING_LABELS = {
     1: 'Tidak Berpuashati',
     2: 'Kurang Berpuashati',
@@ -391,7 +406,8 @@
     5: 'Sangat Berpuashati!'
   };
 
-  // Overall star description
+  const RATING_STARS = { 1: '★☆☆☆☆', 2: '★★☆☆☆', 3: '★★★☆☆', 4: '★★★★☆', 5: '★★★★★' };
+
   document.querySelectorAll('input[name="overall"]').forEach(r => {
     r.addEventListener('change', () => {
       document.getElementById('overall-desc').textContent = RATING_LABELS[r.value] || '';
@@ -399,14 +415,11 @@
     });
   });
 
-  // Progress bar based on filled fields
   const requiredFields = ['name', 'business', 'phone', 'state', 'comment'];
   function updateProgress() {
     let filled = 0;
-    let total = requiredFields.length + 2; // +overall +recommend
-    requiredFields.forEach(id => {
-      if (document.getElementById(id).value.trim()) filled++;
-    });
+    let total = requiredFields.length + 2;
+    requiredFields.forEach(id => { if (document.getElementById(id).value.trim()) filled++; });
     if (document.querySelector('input[name="overall"]:checked')) filled++;
     if (document.querySelector('input[name="recommend"]:checked')) filled++;
     document.getElementById('progress').style.width = Math.round((filled / total) * 100) + '%';
@@ -417,7 +430,6 @@
     el.addEventListener('change', updateProgress);
   });
 
-  // Validation helpers
   function setError(fieldId, show) {
     const f = document.getElementById(fieldId);
     if (!f) return;
@@ -430,98 +442,126 @@
     return /^(\+?60|0)[1-9]\d{7,9}$/.test(val.replace(/[\s\-]/g, ''));
   }
 
-  // Form submit
-  document.getElementById('feedback-form').addEventListener('submit', function(e) {
+  function getVal(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? parseInt(el.value) : 0;
+  }
+
+  document.getElementById('feedback-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     let valid = true;
 
-    // Name
     const name = document.getElementById('name').value.trim();
     setError('field-name', !name);
     if (!name) valid = false;
 
-    // Business
     const business = document.getElementById('business').value.trim();
     setError('field-business', !business);
     if (!business) valid = false;
 
-    // Phone
     const phone = document.getElementById('phone').value.trim();
     const phoneOk = phone && validatePhone(phone);
     setError('field-phone', !phoneOk);
     if (!phoneOk) valid = false;
 
-    // State
     const state = document.getElementById('state').value;
     setError('field-state', !state);
     if (!state) valid = false;
 
-    // Overall rating
     const overall = document.querySelector('input[name="overall"]:checked');
     document.getElementById('overall-err').style.display = overall ? 'none' : 'block';
     if (!overall) valid = false;
 
-    // Comment
     const comment = document.getElementById('comment').value.trim();
     setError('field-comment', !comment);
     if (!comment) valid = false;
 
-    // Recommend
     const recommend = document.querySelector('input[name="recommend"]:checked');
     document.getElementById('recommend-err').style.display = recommend ? 'none' : 'block';
     if (!recommend) valid = false;
 
-    // Consent
     const consent = document.getElementById('consent').checked;
     document.getElementById('consent-err').style.display = consent ? 'none' : 'block';
     if (!consent) valid = false;
 
     if (!valid) {
-      // Scroll to first error
       const firstErr = document.querySelector('.has-error, #overall-err[style*="block"], #recommend-err[style*="block"], #consent-err[style*="block"]');
       if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
-    // Build feedback object
-    const feedback = {
-      id: Date.now(),
-      submittedAt: new Date().toISOString(),
-      name,
-      business,
-      phone,
-      email: document.getElementById('email').value.trim(),
-      state,
-      installDate: document.getElementById('install-date').value,
-      ratings: {
-        overall: parseInt(overall.value),
-        ease: parseInt((document.querySelector('input[name="ease"]:checked') || {value: 0}).value),
-        install: parseInt((document.querySelector('input[name="install"]:checked') || {value: 0}).value),
-        support: parseInt((document.querySelector('input[name="support"]:checked') || {value: 0}).value),
-        value: parseInt((document.querySelector('input[name="value"]:checked') || {value: 0}).value),
-        terminal: parseInt((document.querySelector('input[name="terminal"]:checked') || {value: 0}).value),
-      },
-      comment,
-      improve: document.getElementById('improve').value.trim(),
-      recommend: recommend.value,
-    };
-
-    // Save to localStorage
-    const existing = JSON.parse(localStorage.getItem('dynopos_feedback') || '[]');
-    existing.push(feedback);
-    localStorage.setItem('dynopos_feedback', JSON.stringify(existing));
-
-    // Show success
     const btn = document.getElementById('submit-btn');
     btn.disabled = true;
     document.getElementById('btn-text').textContent = 'Menghantar...';
 
-    setTimeout(() => {
-      document.getElementById('form-screen').style.display = 'none';
-      const s = document.getElementById('success-screen');
-      s.style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 800);
+    const email    = document.getElementById('email').value.trim();
+    const installDate = document.getElementById('install-date').value;
+    const improve  = document.getElementById('improve').value.trim();
+    const overallVal = parseInt(overall.value);
+    const recLabel = { yes: 'Ya, pasti!', maybe: 'Mungkin', no: 'Tidak' }[recommend.value] || recommend.value;
+
+    // ── Bina payload untuk email (Formspree) ──
+    const payload = {
+      _subject: `[DynoPOS Feedback] ${business} — ${RATING_STARS[overallVal]} (${overallVal}/5)`,
+      '👤 Nama':          name,
+      '🏪 Perniagaan':    business,
+      '📞 Telefon':       phone,
+      '📧 E-mel':         email || '—',
+      '📍 Negeri':        state,
+      '📅 Tarikh Pasang': installDate || '—',
+      '─────────────────────────────': '─ PENILAIAN ─',
+      '⭐ Keseluruhan':    `${RATING_STARS[overallVal]} ${overallVal}/5`,
+      '🖥️ Kemudahan Guna':  getVal('ease')     ? `${RATING_STARS[getVal('ease')]} ${getVal('ease')}/5` : '—',
+      '🔧 Kualiti Pasang': getVal('install')  ? `${RATING_STARS[getVal('install')]} ${getVal('install')}/5` : '—',
+      '📞 Sokongan':       getVal('support')  ? `${RATING_STARS[getVal('support')]} ${getVal('support')}/5` : '—',
+      '💰 Nilai Wang':     getVal('value')    ? `${RATING_STARS[getVal('value')]} ${getVal('value')}/5` : '—',
+      '💳 Terminal OnePay':getVal('terminal') ? `${RATING_STARS[getVal('terminal')]} ${getVal('terminal')}/5` : '—',
+      '──────────────────────────────': '─ KOMEN ─',
+      '💬 Aspek Terbaik':  comment,
+      '📝 Cadangan':       improve || '—',
+      '👍 Akan Syorkan':   recLabel,
+    };
+
+    // ── Hantar ke Formspree (email ke anda) ──
+    let emailSent = false;
+    if (!FORMSPREE_ENDPOINT.startsWith('TUKAR')) {
+      try {
+        const res = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        emailSent = res.ok;
+        if (!res.ok) console.warn('Formspree error:', await res.text());
+      } catch (err) {
+        console.warn('Gagal hantar ke Formspree:', err);
+      }
+    }
+
+    // ── Simpan juga dalam localStorage (backup untuk admin dashboard) ──
+    const record = {
+      id: Date.now(), submittedAt: new Date().toISOString(),
+      name, business, phone, email, state, installDate,
+      ratings: {
+        overall: overallVal,
+        ease:     getVal('ease'),
+        install:  getVal('install'),
+        support:  getVal('support'),
+        value:    getVal('value'),
+        terminal: getVal('terminal'),
+      },
+      comment, improve, recommend: recommend.value,
+      emailSent,
+    };
+    const existing = JSON.parse(localStorage.getItem('dynopos_feedback') || '[]');
+    existing.push(record);
+    localStorage.setItem('dynopos_feedback', JSON.stringify(existing));
+
+    // ── Tunjuk success ──
+    document.getElementById('form-screen').style.display = 'none';
+    const s = document.getElementById('success-screen');
+    s.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 </body>
