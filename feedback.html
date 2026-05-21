@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maklum Balas Pelanggan | DynoPOS</title>
+  <meta name="description" content="Kongsikan pengalaman anda menggunakan sistem POS DynoPOS. Maklum balas anda membantu kami menambah baik perkhidmatan." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #0a0a0a;
+      --muted: #6b7280;
+      --brand: #111827;
+      --accent: #f59e0b;
+      --surface: #f9fafb;
+      --border: #e5e7eb;
+      --success: #10b981;
+      --error: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--surface); color: var(--ink); font-family: Inter, system-ui, sans-serif; line-height: 1.6; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Header */
+    header { padding: 16px 0; border-bottom: 1px solid var(--border); background: #fff; position: sticky; top: 0; z-index: 10; }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+    .header-row { display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+    .logo-badge { width: 32px; height: 32px; background: #000; color: #fff; display: grid; place-items: center; border-radius: 10px; font-weight: 800; font-size: 14px; }
+    .back-link { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+    .back-link:hover { color: var(--ink); }
+
+    /* Page title */
+    .page-title { padding: 36px 0 24px; }
+    .page-title h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+    .page-title p { color: var(--muted); font-size: 15px; }
+
+    /* Form card */
+    .form-card { background: #fff; border-radius: 20px; border: 1px solid var(--border); padding: 28px; margin-bottom: 24px; }
+    .form-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); color: var(--brand); display: flex; align-items: center; gap: 8px; }
+    .section-icon { width: 28px; height: 28px; background: var(--surface); border-radius: 8px; display: grid; place-items: center; font-size: 14px; }
+
+    /* Form fields */
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+    .field label span.req { color: var(--error); margin-left: 2px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 15px; font-family: inherit; color: var(--ink); background: #fff;
+      transition: border-color 0.15s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none; border-color: var(--brand);
+    }
+    .field input.error, .field select.error, .field textarea.error {
+      border-color: var(--error);
+    }
+    .field textarea { resize: vertical; min-height: 100px; }
+    .field .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .field .err-msg { font-size: 12px; color: var(--error); margin-top: 4px; display: none; }
+    .field.has-error .err-msg { display: block; }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 500px) { .row-2 { grid-template-columns: 1fr; } }
+
+    /* Star rating */
+    .star-group { display: flex; flex-direction: column; gap: 14px; }
+    .star-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .star-item .label { font-size: 14px; color: var(--ink); flex: 1; }
+    .stars { display: flex; gap: 4px; }
+    .stars input[type="radio"] { display: none; }
+    .stars label {
+      font-size: 28px; cursor: pointer; color: #d1d5db; transition: color 0.1s; line-height: 1;
+      user-select: none;
+    }
+    .stars label:hover,
+    .stars label:hover ~ label { color: #d1d5db; }
+    .stars:hover label { color: var(--accent); }
+    .stars label:hover ~ label { color: #d1d5db; }
+    .stars input[type="radio"]:checked ~ label { color: #d1d5db; }
+    .stars input[type="radio"]:checked + label,
+    .stars input[type="radio"]:checked ~ input[type="radio"]:not(:checked) + label { color: var(--accent); }
+    /* Revert approach — simpler RTL trick */
+    .stars { flex-direction: row-reverse; }
+    .stars label:hover,
+    .stars label:hover ~ label { color: var(--accent) !important; }
+    .stars input[type="radio"]:checked ~ label { color: var(--accent) !important; }
+    .star-rating-wrap { background: var(--surface); border-radius: 12px; padding: 16px; }
+
+    /* Overall star — bigger */
+    .overall-star .stars label { font-size: 38px; }
+    .overall-star { text-align: center; }
+    .overall-star .stars { justify-content: center; gap: 8px; }
+    .rating-desc { font-size: 13px; color: var(--muted); margin-top: 8px; min-height: 20px; }
+
+    /* Recommend radio */
+    .radio-group { display: flex; gap: 10px; }
+    .radio-option { flex: 1; }
+    .radio-option input { display: none; }
+    .radio-option label {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 11px; border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s;
+    }
+    .radio-option input:checked + label {
+      border-color: var(--brand); background: var(--brand); color: #fff;
+    }
+    .radio-option label:hover { border-color: var(--brand); }
+
+    /* Checkbox */
+    .checkbox-field { display: flex; align-items: flex-start; gap: 10px; }
+    .checkbox-field input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; cursor: pointer; accent-color: var(--brand); }
+    .checkbox-field label { font-size: 14px; color: var(--muted); cursor: pointer; }
+
+    /* Submit */
+    .submit-wrap { padding: 4px 0 32px; }
+    .btn-submit {
+      width: 100%; padding: 16px; background: var(--brand); color: #fff;
+      border: none; border-radius: 14px; font-size: 16px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: opacity 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover { opacity: 0.88; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Success screen */
+    #success-screen {
+      display: none; text-align: center; padding: 60px 20px;
+    }
+    .success-icon { font-size: 64px; margin-bottom: 16px; }
+    #success-screen h2 { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+    #success-screen p { color: var(--muted); margin-bottom: 24px; }
+    .btn-back {
+      display: inline-block; padding: 13px 28px; background: var(--brand); color: #fff;
+      border-radius: 12px; font-weight: 600; font-size: 15px;
+    }
+
+    /* Progress bar */
+    .progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 28px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--brand); border-radius: 2px; transition: width 0.3s; width: 0%; }
+
+    /* Footer */
+    footer { padding: 24px 0; border-top: 1px solid var(--border); text-align: center; font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-row">
+    <div class="logo">
+      <div class="logo-badge">D</div>
+      DynoPOS
+    </div>
+    <a href="index.html" class="back-link">&#8592; Laman Utama</a>
+  </div>
+</header>
+
+<!-- SUCCESS SCREEN -->
+<div id="success-screen">
+  <div class="success-icon">&#10003;</div>
+  <h2>Terima Kasih!</h2>
+  <p>Maklum balas anda telah berjaya dihantar.<br>Kami akan menggunakannya untuk menambah baik perkhidmatan DynoPOS.</p>
+  <a href="index.html" class="btn-back">Kembali ke Laman Utama</a>
+</div>
+
+<!-- FORM SCREEN -->
+<div id="form-screen">
+  <div class="wrap">
+    <div class="page-title">
+      <h1>Maklum Balas Pelanggan</h1>
+      <p>Bantu kami perbaiki perkhidmatan DynoPOS dengan berkongsi pengalaman anda.</p>
+    </div>
+
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+    <form id="feedback-form" novalidate>
+
+      <!-- Maklumat Pelanggan -->
+      <div class="form-card">
+        <h2><span class="section-icon">&#128100;</span> Maklumat Pelanggan</h2>
+
+        <div class="row-2">
+          <div class="field" id="field-name">
+            <label for="name">Nama Penuh <span class="req">*</span></label>
+            <input type="text" id="name" name="name" placeholder="cth. Ahmad bin Yusof" autocomplete="name" />
+            <div class="err-msg">Sila masukkan nama anda.</div>
+          </div>
+          <div class="field" id="field-business">
+            <label for="business">Nama Perniagaan <span class="req">*</span></label>
+            <input type="text" id="business" name="business" placeholder="cth. Kedai Makan Aman" />
+            <div class="err-msg">Sila masukkan nama perniagaan.</div>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="field" id="field-phone">
+            <label for="phone">No. Telefon <span class="req">*</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="01X-XXXXXXX" autocomplete="tel" />
+            <div class="err-msg">Sila masukkan nombor telefon yang sah.</div>
+          </div>
+          <div class="field">
+            <label for="email">E-mel (Pilihan)</label>
+            <input type="email" id="email" name="email" placeholder="contoh@email.com" autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="field" id="field-state">
+            <label for="state">Negeri <span class="req">*</span></label>
+            <select id="state" name="state">
+              <option value="">-- Pilih Negeri --</option>
+              <option>Johor</option>
+              <option>Kedah</option>
+              <option>Kelantan</option>
+              <option>Melaka</option>
+              <option>Negeri Sembilan</option>
+              <option>Pahang</option>
+              <option>Perak</option>
+              <option>Perlis</option>
+              <option>Pulau Pinang</option>
+              <option>Sabah</option>
+              <option>Sarawak</option>
+              <option>Selangor</option>
+              <option>Terengganu</option>
+              <option>Kuala Lumpur</option>
+              <option>Labuan</option>
+              <option>Putrajaya</option>
+            </select>
+            <div class="err-msg">Sila pilih negeri.</div>
+          </div>
+          <div class="field">
+            <label for="install-date">Tarikh Pemasangan</label>
+            <input type="month" id="install-date" name="install-date" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Penilaian Keseluruhan -->
+      <div class="form-card">
+        <h2><span class="section-icon">&#11088;</span> Penilaian Keseluruhan</h2>
+
+        <div class="overall-star" id="field-overall">
+          <p style="font-size:14px;color:var(--muted);margin-bottom:12px;">Secara keseluruhan, berapa berpuashati anda dengan DynoPOS?</p>
+          <div class="stars" id="overall-stars">
+            <input type="radio" name="overall" id="s5" value="5"><label for="s5" title="Sangat Berpuashati">&#9733;</label>
+            <input type="radio" name="overall" id="s4" value="4"><label for="s4" title="Berpuashati">&#9733;</label>
+            <input type="radio" name="overall" id="s3" value="3"><label for="s3" title="Sederhana">&#9733;</label>
+            <input type="radio" name="overall" id="s2" value="2"><label for="s2" title="Kurang Berpuashati">&#9733;</label>
+            <input type="radio" name="overall" id="s1" value="1"><label for="s1" title="Tidak Berpuashati">&#9733;</label>
+          </div>
+          <div class="rating-desc" id="overall-desc"></div>
+          <div class="err-msg" id="overall-err" style="display:none;color:var(--error);font-size:12px;margin-top:6px;">Sila berikan penilaian bintang.</div>
+        </div>
+      </div>
+
+      <!-- Penilaian Terperinci -->
+      <div class="form-card">
+        <h2><span class="section-icon">&#128202;</span> Penilaian Terperinci</h2>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Nilai aspek berikut (1 = Lemah, 5 = Cemerlang)</p>
+
+        <div class="star-rating-wrap">
+          <div class="star-group">
+
+            <div class="star-item">
+              <span class="label">Kemudahan Menggunakan POS</span>
+              <div class="stars">
+                <input type="radio" name="ease" id="e5" value="5"><label for="e5">&#9733;</label>
+                <input type="radio" name="ease" id="e4" value="4"><label for="e4">&#9733;</label>
+                <input type="radio" name="ease" id="e3" value="3"><label for="e3">&#9733;</label>
+                <input type="radio" name="ease" id="e2" value="2"><label for="e2">&#9733;</label>
+                <input type="radio" name="ease" id="e1" value="1"><label for="e1">&#9733;</label>
+              </div>
+            </div>
+
+            <div class="star-item">
+              <span class="label">Kualiti Perkhidmatan Pemasangan</span>
+              <div class="stars">
+                <input type="radio" name="install" id="i5" value="5"><label for="i5">&#9733;</label>
+                <input type="radio" name="install" id="i4" value="4"><label for="i4">&#9733;</label>
+                <input type="radio" name="install" id="i3" value="3"><label for="i3">&#9733;</label>
+                <input type="radio" name="install" id="i2" value="2"><label for="i2">&#9733;</label>
+                <input type="radio" name="install" id="i1" value="1"><label for="i1">&#9733;</label>
+              </div>
+            </div>
+
+            <div class="star-item">
+              <span class="label">Sokongan Teknikal Selepas Jualan</span>
+              <div class="stars">
+                <input type="radio" name="support" id="su5" value="5"><label for="su5">&#9733;</label>
+                <input type="radio" name="support" id="su4" value="4"><label for="su4">&#9733;</label>
+                <input type="radio" name="support" id="su3" value="3"><label for="su3">&#9733;</label>
+                <input type="radio" name="support" id="su2" value="2"><label for="su2">&#9733;</label>
+                <input type="radio" name="support" id="su1" value="1"><label for="su1">&#9733;</label>
+              </div>
+            </div>
+
+            <div class="star-item">
+              <span class="label">Nilai Untuk Wang (RM250)</span>
+              <div class="stars">
+                <input type="radio" name="value" id="v5" value="5"><label for="v5">&#9733;</label>
+                <input type="radio" name="value" id="v4" value="4"><label for="v4">&#9733;</label>
+                <input type="radio" name="value" id="v3" value="3"><label for="v3">&#9733;</label>
+                <input type="radio" name="value" id="v2" value="2"><label for="v2">&#9733;</label>
+                <input type="radio" name="value" id="v1" value="1"><label for="v1">&#9733;</label>
+              </div>
+            </div>
+
+            <div class="star-item">
+              <span class="label">Terminal Debit OnePay</span>
+              <div class="stars">
+                <input type="radio" name="terminal" id="t5" value="5"><label for="t5">&#9733;</label>
+                <input type="radio" name="terminal" id="t4" value="4"><label for="t4">&#9733;</label>
+                <input type="radio" name="terminal" id="t3" value="3"><label for="t3">&#9733;</label>
+                <input type="radio" name="terminal" id="t2" value="2"><label for="t2">&#9733;</label>
+                <input type="radio" name="terminal" id="t1" value="1"><label for="t1">&#9733;</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Maklum Balas Teks -->
+      <div class="form-card">
+        <h2><span class="section-icon">&#128172;</span> Komen & Cadangan</h2>
+
+        <div class="field" id="field-comment">
+          <label for="comment">Apakah aspek terbaik DynoPOS? <span class="req">*</span></label>
+          <textarea id="comment" name="comment" placeholder="Kongsi pengalaman positif anda..."></textarea>
+          <div class="err-msg">Sila tuliskan maklum balas anda.</div>
+        </div>
+
+        <div class="field">
+          <label for="improve">Apa yang boleh kami perbaiki?</label>
+          <textarea id="improve" name="improve" placeholder="Cadangan penambahbaikan (jika ada)..."></textarea>
+        </div>
+
+        <div class="field" id="field-recommend">
+          <label>Adakah anda akan mengesyorkan DynoPOS kepada rakan perniagaan? <span class="req">*</span></label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="recommend" id="rec-yes" value="yes">
+              <label for="rec-yes">&#128077; Ya, pasti!</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="recommend" id="rec-maybe" value="maybe">
+              <label for="rec-maybe">&#128528; Mungkin</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="recommend" id="rec-no" value="no">
+              <label for="rec-no">&#128078; Tidak</label>
+            </div>
+          </div>
+          <div class="err-msg" id="recommend-err" style="display:none;color:var(--error);font-size:12px;margin-top:6px;">Sila pilih jawapan anda.</div>
+        </div>
+      </div>
+
+      <!-- Kebenaran -->
+      <div class="form-card">
+        <h2><span class="section-icon">&#128274;</span> Kebenaran</h2>
+        <div class="field" id="field-consent">
+          <div class="checkbox-field">
+            <input type="checkbox" id="consent" name="consent">
+            <label for="consent">Saya bersetuju maklum balas ini digunakan oleh DynoPOS untuk tujuan penambahbaikan perkhidmatan dan mungkin dipaparkan sebagai testimoni (tanpa mendedahkan maklumat peribadi).</label>
+          </div>
+          <div class="err-msg" id="consent-err" style="display:none;color:var(--error);font-size:12px;margin-top:6px;">Sila berikan kebenaran untuk meneruskan.</div>
+        </div>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <span id="btn-text">Hantar Maklum Balas</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 DynoPOS &mdash; Sistem POS untuk PKS Malaysia</p>
+</footer>
+
+<script>
+  const RATING_LABELS = {
+    1: 'Tidak Berpuashati',
+    2: 'Kurang Berpuashati',
+    3: 'Sederhana',
+    4: 'Berpuashati',
+    5: 'Sangat Berpuashati!'
+  };
+
+  // Overall star description
+  document.querySelectorAll('input[name="overall"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('overall-desc').textContent = RATING_LABELS[r.value] || '';
+      document.getElementById('overall-err').style.display = 'none';
+    });
+  });
+
+  // Progress bar based on filled fields
+  const requiredFields = ['name', 'business', 'phone', 'state', 'comment'];
+  function updateProgress() {
+    let filled = 0;
+    let total = requiredFields.length + 2; // +overall +recommend
+    requiredFields.forEach(id => {
+      if (document.getElementById(id).value.trim()) filled++;
+    });
+    if (document.querySelector('input[name="overall"]:checked')) filled++;
+    if (document.querySelector('input[name="recommend"]:checked')) filled++;
+    document.getElementById('progress').style.width = Math.round((filled / total) * 100) + '%';
+  }
+
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', updateProgress);
+    el.addEventListener('change', updateProgress);
+  });
+
+  // Validation helpers
+  function setError(fieldId, show) {
+    const f = document.getElementById(fieldId);
+    if (!f) return;
+    f.classList.toggle('has-error', show);
+    const inp = f.querySelector('input, select, textarea');
+    if (inp) inp.classList.toggle('error', show);
+  }
+
+  function validatePhone(val) {
+    return /^(\+?60|0)[1-9]\d{7,9}$/.test(val.replace(/[\s\-]/g, ''));
+  }
+
+  // Form submit
+  document.getElementById('feedback-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let valid = true;
+
+    // Name
+    const name = document.getElementById('name').value.trim();
+    setError('field-name', !name);
+    if (!name) valid = false;
+
+    // Business
+    const business = document.getElementById('business').value.trim();
+    setError('field-business', !business);
+    if (!business) valid = false;
+
+    // Phone
+    const phone = document.getElementById('phone').value.trim();
+    const phoneOk = phone && validatePhone(phone);
+    setError('field-phone', !phoneOk);
+    if (!phoneOk) valid = false;
+
+    // State
+    const state = document.getElementById('state').value;
+    setError('field-state', !state);
+    if (!state) valid = false;
+
+    // Overall rating
+    const overall = document.querySelector('input[name="overall"]:checked');
+    document.getElementById('overall-err').style.display = overall ? 'none' : 'block';
+    if (!overall) valid = false;
+
+    // Comment
+    const comment = document.getElementById('comment').value.trim();
+    setError('field-comment', !comment);
+    if (!comment) valid = false;
+
+    // Recommend
+    const recommend = document.querySelector('input[name="recommend"]:checked');
+    document.getElementById('recommend-err').style.display = recommend ? 'none' : 'block';
+    if (!recommend) valid = false;
+
+    // Consent
+    const consent = document.getElementById('consent').checked;
+    document.getElementById('consent-err').style.display = consent ? 'none' : 'block';
+    if (!consent) valid = false;
+
+    if (!valid) {
+      // Scroll to first error
+      const firstErr = document.querySelector('.has-error, #overall-err[style*="block"], #recommend-err[style*="block"], #consent-err[style*="block"]');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Build feedback object
+    const feedback = {
+      id: Date.now(),
+      submittedAt: new Date().toISOString(),
+      name,
+      business,
+      phone,
+      email: document.getElementById('email').value.trim(),
+      state,
+      installDate: document.getElementById('install-date').value,
+      ratings: {
+        overall: parseInt(overall.value),
+        ease: parseInt((document.querySelector('input[name="ease"]:checked') || {value: 0}).value),
+        install: parseInt((document.querySelector('input[name="install"]:checked') || {value: 0}).value),
+        support: parseInt((document.querySelector('input[name="support"]:checked') || {value: 0}).value),
+        value: parseInt((document.querySelector('input[name="value"]:checked') || {value: 0}).value),
+        terminal: parseInt((document.querySelector('input[name="terminal"]:checked') || {value: 0}).value),
+      },
+      comment,
+      improve: document.getElementById('improve').value.trim(),
+      recommend: recommend.value,
+    };
+
+    // Save to localStorage
+    const existing = JSON.parse(localStorage.getItem('dynopos_feedback') || '[]');
+    existing.push(feedback);
+    localStorage.setItem('dynopos_feedback', JSON.stringify(existing));
+
+    // Show success
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    document.getElementById('btn-text').textContent = 'Menghantar...';
+
+    setTimeout(() => {
+      document.getElementById('form-screen').style.display = 'none';
+      const s = document.getElementById('success-screen');
+      s.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 800);
+  });
+</script>
+</body>
+</html>

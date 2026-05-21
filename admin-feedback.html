@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard Maklum Balas | DynoPOS Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --ink: #0a0a0a;
+      --muted: #6b7280;
+      --brand: #111827;
+      --accent: #f59e0b;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --success: #10b981;
+      --warn: #f59e0b;
+      --error: #ef4444;
+      --info: #3b82f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; line-height: 1.5; min-height: 100vh; }
+
+    /* Login overlay */
+    #login-overlay {
+      position: fixed; inset: 0; background: var(--brand);
+      display: flex; align-items: center; justify-content: center; z-index: 100;
+    }
+    .login-box { background: #fff; border-radius: 20px; padding: 36px; width: 100%; max-width: 380px; text-align: center; }
+    .login-box .logo { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .login-box .logo-badge { width: 48px; height: 48px; background: #000; color: #fff; border-radius: 14px; display: grid; place-items: center; font-size: 22px; font-weight: 800; margin: 0 auto 12px; }
+    .login-box h2 { font-size: 18px; margin-bottom: 4px; }
+    .login-box p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+    .login-box input {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 16px; font-family: inherit; letter-spacing: 4px; text-align: center;
+      margin-bottom: 12px;
+    }
+    .login-box input:focus { outline: none; border-color: var(--brand); }
+    .login-box button {
+      width: 100%; padding: 13px; background: var(--brand); color: #fff;
+      border: none; border-radius: 10px; font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+    }
+    .login-err { color: var(--error); font-size: 13px; margin-top: 8px; display: none; }
+
+    /* Header */
+    header { background: var(--brand); color: #fff; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .logo-sm { width: 32px; height: 32px; background: rgba(255,255,255,0.15); border-radius: 8px; display: grid; place-items: center; font-weight: 800; }
+    header h1 { font-size: 16px; font-weight: 700; }
+    header p { font-size: 12px; opacity: 0.6; }
+    .header-actions { display: flex; gap: 10px; align-items: center; }
+    .btn-sm {
+      padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: inherit; border: none;
+    }
+    .btn-export { background: var(--accent); color: #000; }
+    .btn-logout { background: rgba(255,255,255,0.1); color: #fff; }
+    .btn-logout:hover { background: rgba(255,255,255,0.2); }
+
+    /* Main */
+    main { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 18px 20px; }
+    .stat-card .label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .stat-card .value { font-size: 30px; font-weight: 800; color: var(--ink); line-height: 1; }
+    .stat-card .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .stat-card.accent .value { color: var(--accent); }
+    .stat-card.green .value { color: var(--success); }
+
+    /* Filter bar */
+    .filter-bar { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 16px 20px; margin-bottom: 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .filter-bar select, .filter-bar input {
+      padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: var(--ink); background: var(--bg);
+    }
+    .filter-bar select:focus, .filter-bar input:focus { outline: none; border-color: var(--brand); }
+    .filter-bar label { font-size: 13px; font-weight: 600; color: var(--muted); }
+    .filter-group { display: flex; align-items: center; gap: 8px; }
+    .btn-clear { padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; background: #fff; cursor: pointer; font-family: inherit; }
+
+    /* Table */
+    .table-wrap { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+    .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .table-header h2 { font-size: 15px; font-weight: 700; }
+    .count-badge { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 600; color: var(--muted); }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th { background: var(--bg); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer; user-select: none; }
+    thead th:hover { color: var(--ink); }
+    thead th .sort-icon { margin-left: 4px; opacity: 0.4; }
+    thead th.sorted .sort-icon { opacity: 1; }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--bg); }
+    tbody td { padding: 12px 14px; vertical-align: middle; }
+    .cell-name { font-weight: 600; }
+    .cell-business { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+    /* Stars display */
+    .stars-display { color: var(--accent); font-size: 14px; letter-spacing: -1px; }
+    .stars-display .empty { color: #d1d5db; }
+
+    /* Recommend badge */
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge-yes { background: #d1fae5; color: #065f46; }
+    .badge-maybe { background: #fef3c7; color: #92400e; }
+    .badge-no { background: #fee2e2; color: #991b1b; }
+
+    /* Detail modal */
+    #modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 50; align-items: center; justify-content: center; padding: 20px;
+    }
+    #modal-overlay.open { display: flex; }
+    .modal { background: #fff; border-radius: 20px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .modal-header h3 { font-size: 16px; font-weight: 700; }
+    .modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; }
+    .modal-body { padding: 20px 24px; }
+    .modal-section { margin-bottom: 20px; }
+    .modal-section h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 10px; }
+    .info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .k { color: var(--muted); }
+    .info-row .v { font-weight: 500; text-align: right; }
+    .rating-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .rating-row:last-child { border-bottom: none; }
+    .comment-box { background: var(--bg); border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.6; color: var(--ink); }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+    .btn-delete { padding: 9px 16px; background: #fee2e2; color: #991b1b; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .btn-close-modal { padding: 9px 16px; background: var(--brand); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-state h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+
+    /* Chart bar */
+    .chart-bar-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .chart-label { font-size: 13px; color: var(--muted); width: 36px; text-align: right; }
+    .chart-bar-bg { flex: 1; background: var(--bg); border-radius: 4px; height: 20px; overflow: hidden; }
+    .chart-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s; display: flex; align-items: center; padding-left: 8px; }
+    .chart-count { font-size: 11px; font-weight: 600; color: #000; white-space: nowrap; }
+
+    @media (max-width: 640px) {
+      main { padding: 16px; }
+      .header-actions .btn-export span { display: none; }
+      header h1 { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div id="login-overlay">
+  <div class="login-box">
+    <div class="logo-badge">D</div>
+    <div class="logo">DynoPOS</div>
+    <h2>Dashboard Admin</h2>
+    <p>Masukkan PIN untuk akses dashboard maklum balas</p>
+    <input type="password" id="pin-input" maxlength="6" placeholder="&#9679;&#9679;&#9679;&#9679;" autocomplete="off" />
+    <button onclick="checkPin()">Masuk</button>
+    <div class="login-err" id="login-err">PIN tidak sah. Cuba lagi.</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none;">
+
+  <header>
+    <div class="header-left">
+      <div class="logo-sm">D</div>
+      <div>
+        <h1>Dashboard Maklum Balas</h1>
+        <p>DynoPOS Admin Panel</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-sm btn-export" onclick="exportCSV()">&#8659; <span>Eksport CSV</span></button>
+      <button class="btn-sm btn-logout" onclick="logout()">Keluar</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="stats-grid"></div>
+
+    <!-- Rating distribution chart -->
+    <div style="background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:20px;margin-bottom:20px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;">Taburan Penilaian Keseluruhan</div>
+      <div id="rating-chart"></div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>Negeri:</label>
+        <select id="filter-state" onchange="applyFilters()">
+          <option value="">Semua Negeri</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Penilaian:</label>
+        <select id="filter-rating" onchange="applyFilters()">
+          <option value="">Semua</option>
+          <option value="5">5 Bintang</option>
+          <option value="4">4 Bintang</option>
+          <option value="3">3 Bintang</option>
+          <option value="2">2 Bintang</option>
+          <option value="1">1 Bintang</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Cari:</label>
+        <input type="text" id="filter-search" placeholder="Nama / perniagaan..." oninput="applyFilters()" />
+      </div>
+      <button class="btn-clear" onclick="clearFilters()">Kosongkan Penapis</button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <div class="table-header">
+        <h2>Senarai Maklum Balas</h2>
+        <span class="count-badge" id="result-count">0 rekod</span>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th onclick="sortBy('submittedAt')" id="th-date">Tarikh <span class="sort-icon">&#8597;</span></th>
+              <th onclick="sortBy('name')" id="th-name">Pelanggan <span class="sort-icon">&#8597;</span></th>
+              <th onclick="sortBy('state')" id="th-state">Negeri <span class="sort-icon">&#8597;</span></th>
+              <th onclick="sortBy('overall')" id="th-overall">Keseluruhan <span class="sort-icon">&#8597;</span></th>
+              <th>Kemudahan</th>
+              <th>Sokongan</th>
+              <th>Nilai</th>
+              <th onclick="sortBy('recommend')" id="th-rec">Syorkan <span class="sort-icon">&#8597;</span></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="feedback-table-body"></tbody>
+        </table>
+      </div>
+      <div id="empty-state" class="empty-state" style="display:none;">
+        <div class="icon">&#128203;</div>
+        <h3>Tiada maklum balas lagi</h3>
+        <p>Maklum balas pelanggan akan dipaparkan di sini.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-title">Butiran Maklum Balas</h3>
+      <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-delete" id="modal-delete-btn">Padam</button>
+      <button class="btn-close-modal" onclick="closeModalDirect()">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ADMIN_PIN = '1234'; // Change this PIN
+  const STORAGE_KEY = 'dynopos_feedback';
+
+  let allFeedback = [];
+  let filtered = [];
+  let sortKey = 'submittedAt';
+  let sortAsc = false;
+  let currentModalId = null;
+
+  // --- Auth ---
+  function checkPin() {
+    const pin = document.getElementById('pin-input').value;
+    if (pin === ADMIN_PIN) {
+      document.getElementById('login-overlay').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      init();
+    } else {
+      document.getElementById('login-err').style.display = 'block';
+      document.getElementById('pin-input').value = '';
+    }
+  }
+  document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPin(); });
+
+  function logout() {
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('login-overlay').style.display = 'flex';
+    document.getElementById('pin-input').value = '';
+  }
+
+  // --- Init ---
+  function init() {
+    allFeedback = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    populateStateFilter();
+    applyFilters();
+    renderStats();
+    renderChart();
+  }
+
+  // --- Stats ---
+  function renderStats() {
+    const total = allFeedback.length;
+    const avg = total ? (allFeedback.reduce((s, f) => s + f.ratings.overall, 0) / total).toFixed(1) : '—';
+    const recommended = allFeedback.filter(f => f.recommend === 'yes').length;
+    const pct = total ? Math.round((recommended / total) * 100) : 0;
+    const thisMonth = allFeedback.filter(f => {
+      const d = new Date(f.submittedAt);
+      const now = new Date();
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    }).length;
+
+    document.getElementById('stats-grid').innerHTML = `
+      <div class="stat-card">
+        <div class="label">Jumlah Maklum Balas</div>
+        <div class="value">${total}</div>
+        <div class="sub">semua masa</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="label">Purata Penilaian</div>
+        <div class="value">${avg} &#9733;</div>
+        <div class="sub">daripada 5.0</div>
+      </div>
+      <div class="stat-card green">
+        <div class="label">Kadar Syorkan</div>
+        <div class="value">${pct}%</div>
+        <div class="sub">${recommended} daripada ${total}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Bulan Ini</div>
+        <div class="value">${thisMonth}</div>
+        <div class="sub">maklum balas baru</div>
+      </div>
+    `;
+  }
+
+  // --- Chart ---
+  function renderChart() {
+    const counts = [0, 0, 0, 0, 0]; // index 0 = 1 star
+    allFeedback.forEach(f => { if (f.ratings.overall >= 1 && f.ratings.overall <= 5) counts[f.ratings.overall - 1]++; });
+    const max = Math.max(...counts, 1);
+    const html = [5, 4, 3, 2, 1].map(star => {
+      const c = counts[star - 1];
+      const w = Math.round((c / max) * 100);
+      return `
+        <div class="chart-bar-wrap">
+          <div class="chart-label">${star}&#9733;</div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width:${w}%">
+              ${c > 0 ? `<span class="chart-count">${c}</span>` : ''}
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);width:30px;">${c}</div>
+        </div>`;
+    }).join('');
+    document.getElementById('rating-chart').innerHTML = html;
+  }
+
+  // --- Filters ---
+  function populateStateFilter() {
+    const states = [...new Set(allFeedback.map(f => f.state).filter(Boolean))].sort();
+    const sel = document.getElementById('filter-state');
+    states.forEach(s => {
+      const o = document.createElement('option');
+      o.value = s; o.textContent = s;
+      sel.appendChild(o);
+    });
+  }
+
+  function applyFilters() {
+    const state = document.getElementById('filter-state').value;
+    const rating = document.getElementById('filter-rating').value;
+    const search = document.getElementById('filter-search').value.toLowerCase();
+
+    filtered = allFeedback.filter(f => {
+      if (state && f.state !== state) return false;
+      if (rating && f.ratings.overall !== parseInt(rating)) return false;
+      if (search && !f.name.toLowerCase().includes(search) && !f.business.toLowerCase().includes(search)) return false;
+      return true;
+    });
+
+    sortFiltered();
+    renderTable();
+  }
+
+  function clearFilters() {
+    document.getElementById('filter-state').value = '';
+    document.getElementById('filter-rating').value = '';
+    document.getElementById('filter-search').value = '';
+    applyFilters();
+  }
+
+  // --- Sort ---
+  function sortBy(key) {
+    if (sortKey === key) sortAsc = !sortAsc;
+    else { sortKey = key; sortAsc = false; }
+    document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
+    const thMap = { submittedAt: 'th-date', name: 'th-name', state: 'th-state', overall: 'th-overall', recommend: 'th-rec' };
+    if (thMap[key]) document.getElementById(thMap[key])?.classList.add('sorted');
+    sortFiltered();
+    renderTable();
+  }
+
+  function sortFiltered() {
+    filtered.sort((a, b) => {
+      let va = sortKey === 'overall' ? a.ratings.overall : (a[sortKey] || '');
+      let vb = sortKey === 'overall' ? b.ratings.overall : (b[sortKey] || '');
+      if (va < vb) return sortAsc ? -1 : 1;
+      if (va > vb) return sortAsc ? 1 : -1;
+      return 0;
+    });
+  }
+
+  // --- Render table ---
+  function stars(n, max = 5) {
+    const filled = '&#9733;'.repeat(Math.max(0, n));
+    const empty = '<span class="empty">&#9733;</span>'.repeat(Math.max(0, max - n));
+    return `<span class="stars-display">${filled}${empty}</span>`;
+  }
+
+  function recBadge(r) {
+    const map = { yes: ['badge-yes', '&#128077; Ya'], maybe: ['badge-maybe', '&#128528; Mungkin'], no: ['badge-no', '&#128078; Tidak'] };
+    const [cls, txt] = map[r] || ['', r];
+    return `<span class="badge ${cls}">${txt}</span>`;
+  }
+
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('feedback-table-body');
+    document.getElementById('result-count').textContent = filtered.length + ' rekod';
+
+    if (!filtered.length) {
+      tbody.innerHTML = '';
+      document.getElementById('empty-state').style.display = 'block';
+      return;
+    }
+    document.getElementById('empty-state').style.display = 'none';
+
+    tbody.innerHTML = filtered.map(f => `
+      <tr>
+        <td style="white-space:nowrap;color:var(--muted);font-size:12px;">${fmtDate(f.submittedAt)}</td>
+        <td>
+          <div class="cell-name">${esc(f.name)}</div>
+          <div class="cell-business">${esc(f.business)}</div>
+        </td>
+        <td style="font-size:13px;">${esc(f.state)}</td>
+        <td>${stars(f.ratings.overall)}</td>
+        <td>${f.ratings.ease ? stars(f.ratings.ease) : '<span style="color:var(--muted)">—</span>'}</td>
+        <td>${f.ratings.support ? stars(f.ratings.support) : '<span style="color:var(--muted)">—</span>'}</td>
+        <td>${f.ratings.value ? stars(f.ratings.value) : '<span style="color:var(--muted)">—</span>'}</td>
+        <td>${recBadge(f.recommend)}</td>
+        <td><button onclick="openModal(${f.id})" style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;">Lihat</button></td>
+      </tr>
+    `).join('');
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // --- Modal ---
+  function openModal(id) {
+    const f = allFeedback.find(x => x.id === id);
+    if (!f) return;
+    currentModalId = id;
+
+    const ratingLabels = {
+      overall: 'Keseluruhan',
+      ease: 'Kemudahan Guna',
+      install: 'Kualiti Pemasangan',
+      support: 'Sokongan Teknikal',
+      value: 'Nilai Wang',
+      terminal: 'Terminal OnePay',
+    };
+
+    document.getElementById('modal-title').textContent = f.name + ' — ' + f.business;
+    document.getElementById('modal-body').innerHTML = `
+      <div class="modal-section">
+        <h4>Maklumat Pelanggan</h4>
+        <div class="info-row"><span class="k">Nama</span><span class="v">${esc(f.name)}</span></div>
+        <div class="info-row"><span class="k">Perniagaan</span><span class="v">${esc(f.business)}</span></div>
+        <div class="info-row"><span class="k">Telefon</span><span class="v">${esc(f.phone)}</span></div>
+        ${f.email ? `<div class="info-row"><span class="k">E-mel</span><span class="v">${esc(f.email)}</span></div>` : ''}
+        <div class="info-row"><span class="k">Negeri</span><span class="v">${esc(f.state)}</span></div>
+        ${f.installDate ? `<div class="info-row"><span class="k">Tarikh Pasang</span><span class="v">${f.installDate}</span></div>` : ''}
+        <div class="info-row"><span class="k">Dihantar</span><span class="v">${fmtDate(f.submittedAt)}</span></div>
+      </div>
+
+      <div class="modal-section">
+        <h4>Penilaian</h4>
+        ${Object.entries(f.ratings).filter(([,v]) => v).map(([k, v]) => `
+          <div class="rating-row">
+            <span>${ratingLabels[k] || k}</span>
+            <span>${stars(v)} <span style="font-size:12px;color:var(--muted)">(${v}/5)</span></span>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="modal-section">
+        <h4>Maklum Balas</h4>
+        <div class="comment-box">${esc(f.comment)}</div>
+        ${f.improve ? `<div style="margin-top:10px;"><div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;">CADANGAN PENAMBAHBAIKAN</div><div class="comment-box">${esc(f.improve)}</div></div>` : ''}
+      </div>
+
+      <div class="modal-section">
+        <h4>Pengesyoran</h4>
+        ${recBadge(f.recommend)}
+      </div>
+    `;
+
+    document.getElementById('modal-delete-btn').onclick = () => deleteFeedback(id);
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+  }
+  function closeModalDirect() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    currentModalId = null;
+  }
+
+  function deleteFeedback(id) {
+    if (!confirm('Padam maklum balas ini? Tindakan ini tidak boleh diundur.')) return;
+    allFeedback = allFeedback.filter(f => f.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(allFeedback));
+    closeModalDirect();
+    renderStats();
+    renderChart();
+    applyFilters();
+  }
+
+  // --- Export CSV ---
+  function exportCSV() {
+    if (!filtered.length) { alert('Tiada data untuk dieksport.'); return; }
+    const headers = ['Tarikh','Nama','Perniagaan','Telefon','E-mel','Negeri','Pasang','Keseluruhan','Kemudahan','Pemasangan','Sokongan','Nilai','Terminal','Syorkan','Komen','Cadangan'];
+    const rows = filtered.map(f => [
+      fmtDate(f.submittedAt), f.name, f.business, f.phone, f.email, f.state, f.installDate,
+      f.ratings.overall, f.ratings.ease, f.ratings.install, f.ratings.support, f.ratings.value, f.ratings.terminal,
+      f.recommend, f.comment, f.improve
+    ].map(v => `"${String(v || '').replace(/"/g, '""')}"`).join(','));
+
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `dynopos-feedback-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Keyboard shortcut: Enter on login
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModalDirect();
+  });
+</script>
+</body>
+</html>
