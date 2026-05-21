@@ -63,17 +63,7 @@
       transition: opacity .15s;
     }
     .btn-primary:hover { opacity: .88; }
-    .hero-visual {
-      background: var(--surface); border-radius: 20px; border: 1px solid var(--border);
-      padding: 28px; display: flex; flex-direction: column; gap: 14px;
-    }
-    .mock-bar { background: var(--brand); border-radius: 10px; padding: 14px 16px; color: #fff; }
-    .mock-bar .label { font-size: 11px; opacity: .6; margin-bottom: 4px; }
-    .mock-bar .val { font-size: 26px; font-weight: 800; }
-    .mock-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .mock-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
-    .mock-card .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-    .mock-card .val { font-size: 18px; font-weight: 700; }
+    .hero-visual { border-radius: 20px; overflow: hidden; }
 
     /* ── Sub-headline ── */
     .subhead { background: var(--surface); padding: 48px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -98,24 +88,29 @@
 
     /* ── Pakej ── */
     .packages { padding: 64px 0; background: var(--surface); }
-    .packages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+    .pkg-group { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin-bottom: 56px; }
+    .pkg-group:last-child { margin-bottom: 0; }
+    @media (max-width: 768px) { .pkg-group { grid-template-columns: 1fr; } }
+    .pkg-group-img img { width: 100%; border-radius: 16px; display: block; }
+    .pkg-group-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); margin-bottom: 8px; }
+    .pkg-group-title { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+    .pkg-cards { display: flex; flex-direction: column; gap: 14px; }
     .pkg-card {
-      background: #fff; border: 1.5px solid var(--border); border-radius: 18px;
-      padding: 24px; display: flex; flex-direction: column; gap: 10px;
+      background: #fff; border: 1.5px solid var(--border); border-radius: 16px;
+      padding: 20px 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
       transition: border-color .2s, box-shadow .2s;
     }
-    .pkg-card:hover { border-color: var(--accent); box-shadow: 0 4px 20px rgba(245,158,11,.1); }
+    .pkg-card:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(245,158,11,.1); }
     .pkg-card.popular { border-color: var(--brand); }
     .pkg-tag {
       display: inline-block; background: var(--brand); color: #fff;
-      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
-      text-transform: uppercase; letter-spacing: .05em; width: fit-content;
+      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px;
     }
-    .pkg-type { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
-    .pkg-card h3 { font-size: 17px; font-weight: 700; }
-    .pkg-price { font-size: 30px; font-weight: 800; color: var(--brand); line-height: 1; }
-    .pkg-price span { font-size: 14px; font-weight: 500; color: var(--muted); }
-    .pkg-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .pkg-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .pkg-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .pkg-price { font-size: 24px; font-weight: 800; color: var(--brand); white-space: nowrap; text-align: right; }
+    .pkg-price span { display: block; font-size: 11px; font-weight: 500; color: var(--muted); }
 
     /* ── Sesuai Untuk ── */
     .suitable { padding: 64px 0; }
@@ -208,25 +203,7 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="mock-bar">
-          <div class="label">Jualan Hari Ini</div>
-          <div class="val">RM 2,480.00</div>
-        </div>
-        <div class="mock-row">
-          <div class="mock-card">
-            <div class="label">Transaksi</div>
-            <div class="val">47</div>
-          </div>
-          <div class="mock-card">
-            <div class="label">Produk Aktif</div>
-            <div class="val">138</div>
-          </div>
-        </div>
-        <div class="mock-card">
-          <div class="label">Resit Terakhir — Meja 4</div>
-          <div class="val" style="font-size:15px;margin-top:4px;">Nasi Lemak × 2 &nbsp;·&nbsp; Teh Tarik × 3</div>
-          <div style="font-size:13px;color:var(--accent);font-weight:700;margin-top:6px;">RM 22.50 &nbsp;✓ Bayar</div>
-        </div>
+        <img src="file_00000000fd3c71faa8c4c63df892645d.png" alt="DynoPOS Retail Basic RM1,350" style="width:100%;border-radius:16px;display:block;" />
       </div>
     </div>
   </div>
@@ -273,46 +250,70 @@
   <div class="wrap">
     <div class="section-label">Harga & Pakej</div>
     <div class="section-title">Pakej DynoPOS</div>
-    <div class="packages-grid">
 
-      <div class="pkg-card">
-        <div class="pkg-type">Retail</div>
-        <h3>Retail Basic</h3>
-        <div class="pkg-price">RM 1,350 <span>sekali bayar</span></div>
-        <p>Sesuai untuk kedai runcit, mini market, butik, kedai hardware dan kedai biasa.</p>
+    <!-- Retail -->
+    <div class="pkg-group">
+      <div class="pkg-group-img">
+        <img src="file_00000000372871fa91bcdfac8440e839.png" alt="Pakej Retail DynoPOS" />
       </div>
-
-      <div class="pkg-card">
-        <div class="pkg-type">Retail</div>
-        <h3>Retail + Barcode Printer</h3>
-        <div class="pkg-price">RM 1,650 <span>sekali bayar</span></div>
-        <p>Untuk kedai yang perlukan label barcode dan kawalan stok lebih kemas.</p>
+      <div>
+        <div class="pkg-group-label">&#127978; Retail</div>
+        <div class="pkg-group-title">Untuk Kedai Runcit, Butik & Retail</div>
+        <div class="pkg-cards">
+          <div class="pkg-card">
+            <div>
+              <h3>Retail Basic</h3>
+              <p>Sesuai untuk kedai runcit, mini market, butik, kedai hardware dan kedai biasa.</p>
+            </div>
+            <div class="pkg-price">RM 1,350<span>sekali bayar</span></div>
+          </div>
+          <div class="pkg-card">
+            <div>
+              <h3>Retail + Barcode Printer</h3>
+              <p>Untuk kedai yang perlukan label barcode dan kawalan stok lebih kemas.</p>
+            </div>
+            <div class="pkg-price">RM 1,650<span>sekali bayar</span></div>
+          </div>
+        </div>
       </div>
-
-      <div class="pkg-card">
-        <div class="pkg-type">F&B</div>
-        <h3>F&B Basic</h3>
-        <div class="pkg-price">RM 1,350 <span>sekali bayar</span></div>
-        <p>Sesuai untuk restoran, warung, cafe, kedai makan dan stall.</p>
-      </div>
-
-      <div class="pkg-card popular">
-        <div class="pkg-tag">Popular</div>
-        <div class="pkg-type">F&B</div>
-        <h3>F&B Single Screen</h3>
-        <div class="pkg-price">RM 1,750 <span>sekali bayar</span></div>
-        <p>Untuk operasi kedai makan yang lebih tersusun dan efisien.</p>
-      </div>
-
-      <div class="pkg-card">
-        <div class="pkg-type">F&B</div>
-        <h3>F&B Dual Screen</h3>
-        <div class="pkg-price">RM 2,650 <span>sekali bayar</span></div>
-        <p>Paparan pelanggan lebih profesional dan sesuai untuk kedai yang mahu nampak premium.</p>
-      </div>
-
     </div>
-    <p style="margin-top:20px;font-size:13px;color:var(--muted);">* Harga tertakluk kepada pakej, lokasi pemasangan dan keperluan tambahan. Caj penghantaran / pemasangan luar kawasan mungkin dikenakan.</p>
+
+    <!-- F&B -->
+    <div class="pkg-group">
+      <div class="pkg-group-img">
+        <img src="file_00000000830471fa8e8c3d4bcaddc6d8.png" alt="Pakej F&B DynoPOS" />
+      </div>
+      <div>
+        <div class="pkg-group-label">&#127869; F&B</div>
+        <div class="pkg-group-title">Untuk Restoran, Cafe & Kedai Makan</div>
+        <div class="pkg-cards">
+          <div class="pkg-card">
+            <div>
+              <h3>F&B Basic</h3>
+              <p>Sesuai untuk restoran, warung, cafe, kedai makan dan stall.</p>
+            </div>
+            <div class="pkg-price">RM 1,350<span>sekali bayar</span></div>
+          </div>
+          <div class="pkg-card popular">
+            <div>
+              <div class="pkg-tag">Popular</div>
+              <h3>F&B Single Screen</h3>
+              <p>Untuk operasi kedai makan yang lebih tersusun dan efisien.</p>
+            </div>
+            <div class="pkg-price">RM 1,750<span>sekali bayar</span></div>
+          </div>
+          <div class="pkg-card">
+            <div>
+              <h3>F&B Dual Screen</h3>
+              <p>Paparan pelanggan lebih profesional untuk kedai yang mahu nampak premium.</p>
+            </div>
+            <div class="pkg-price">RM 2,650<span>sekali bayar</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);">* Harga tertakluk kepada pakej, lokasi pemasangan dan keperluan tambahan. Caj penghantaran / pemasangan luar kawasan mungkin dikenakan.</p>
   </div>
 </section>
 
