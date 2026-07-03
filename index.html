@@ -71,12 +71,7 @@
     padding:14px 28px; max-width:1180px; margin:0 auto;
   }
   .brand{display:flex; align-items:center; gap:10px;}
-  .brand-badge{
-    width:36px; height:36px; border-radius:50%;
-    background:linear-gradient(135deg,var(--teal),var(--teal-d));
-    display:flex; align-items:center; justify-content:center;
-    font-size:18px; box-shadow:0 2px 8px rgba(10,31,27,.25); flex:none;
-  }
+  .brand img{width:36px; height:36px; border-radius:50%; box-shadow:0 2px 8px rgba(10,31,27,.25);}
   .brand span{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; letter-spacing:-0.01em;}
   .navlinks{display:flex; gap:28px; font-size:14px; font-weight:500; color:var(--slate);}
   .navlinks a{transition:color .2s;}
@@ -99,9 +94,22 @@
   .hero{
     background:radial-gradient(120% 100% at 100% 0%, #123832 0%, var(--ink) 55%);
     color:var(--paper);
-    padding:76px 0;
+    padding:76px 0 0;
     overflow:hidden;
     position:relative;
+  }
+  .hero-bg{
+    position:absolute; inset:0; z-index:0;
+    background-image:url('assets/hero-bg.jpg');
+    background-size:cover; background-position:center 30%;
+    filter:blur(6px) saturate(90%);
+    transform:scale(1.08);
+    opacity:.32;
+  }
+  .hero-bg::after{content:"";}
+  .hero-scrim{
+    position:absolute; inset:0; z-index:0;
+    background:linear-gradient(100deg, var(--ink) 18%, rgba(10,31,27,.55) 55%, rgba(10,31,27,.15) 100%);
   }
   .hero-grid{
     position:relative; z-index:1;
@@ -138,18 +146,11 @@
     background:radial-gradient(circle, rgba(95,196,182,.35), rgba(95,196,182,0) 70%);
     filter:blur(10px); z-index:0;
   }
-  .product-placeholder{
-    position:relative; z-index:1; width:100%; max-width:340px; aspect-ratio:4/5;
-    border-radius:var(--r-lg);
-    background:linear-gradient(160deg, var(--ink-2), var(--teal-d));
-    border:1px solid rgba(95,196,182,.35);
-    box-shadow:0 34px 40px rgba(0,0,0,.4);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+  .product-shot img{
+    position:relative; z-index:1; width:100%; max-width:420px;
+    filter:drop-shadow(0 34px 40px rgba(0,0,0,.5));
     animation:float 5s ease-in-out infinite;
-    color:var(--paper);
   }
-  .product-placeholder .icon{font-size:64px; line-height:1;}
-  .product-placeholder span{font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.06em; color:var(--teal-l); text-transform:uppercase;}
   @keyframes float{
     0%,100%{transform:translateY(0);}
     50%{transform:translateY(-14px);}
@@ -220,12 +221,8 @@
     font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:11px; letter-spacing:.04em;
     padding:5px 38px; transform:rotate(40deg); text-transform:uppercase;
   }
-  .pr-photo{
-    width:100%; height:130px; overflow:hidden; border-bottom:1px dashed var(--line);
-    display:flex; align-items:center; justify-content:center;
-    background:linear-gradient(135deg,var(--paper-2),var(--line));
-  }
-  .pr-photo .icon{font-size:44px;}
+  .pr-photo{width:100%; height:150px; overflow:hidden; border-bottom:1px dashed var(--line);}
+  .pr-photo img{width:100%; height:100%; object-fit:cover;}
   .pr-head{padding:20px 24px 18px; border-bottom:1px dashed var(--line);}
   .pr-head .pr-eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--slate-l); text-transform:uppercase; letter-spacing:.06em;}
   .pr-head h3{font-size:21px; margin:6px 0 10px;}
@@ -244,6 +241,24 @@
   .price-receipt.popular .pr-cta a:hover{background:var(--amber-d); color:var(--white);}
   .price-note{text-align:center; color:var(--slate-l); font-size:12.5px; margin-top:30px; font-family:'IBM Plex Mono',monospace;}
 
+  /* ---------- GALLERY ---------- */
+  .gallery{
+    display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:150px; gap:16px;
+  }
+  .g-item{margin:0; position:relative; border-radius:var(--r-md); overflow:hidden; box-shadow:var(--shadow); border:1px solid var(--line);}
+  .g-item.g-tall{grid-row:span 2; grid-column:span 2;}
+  .g-item img{width:100%; height:100%; object-fit:cover; transition:transform .5s ease;}
+  .g-item:hover img{transform:scale(1.06);}
+  .g-item figcaption{
+    position:absolute; left:0; right:0; bottom:0; padding:12px 14px;
+    background:linear-gradient(0deg, rgba(10,31,27,.82), transparent);
+    color:var(--white); font-size:12.5px; font-family:'IBM Plex Mono',monospace;
+  }
+  @media (max-width:900px){
+    .gallery{grid-template-columns:repeat(2,1fr); grid-auto-rows:140px;}
+    .g-item.g-tall{grid-column:span 2; grid-row:span 2;}
+  }
+
   /* ---------- INDUSTRI ---------- */
   .industri-band{background:var(--ink); color:var(--paper); padding:70px 0;}
   .tag-grid{display:flex; flex-wrap:wrap; gap:12px; margin-top:30px;}
@@ -256,7 +271,17 @@
   .tag:hover{border-color:var(--amber); background:rgba(232,163,61,.1); transform:translateY(-2px);}
 
   /* ---------- ABOUT / PROOF ---------- */
-  .about-grid{display:grid; grid-template-columns:1fr; gap:56px; align-items:center; max-width:720px;}
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+  .about-media{position:relative;}
+  .about-media img{border-radius:var(--r-lg); box-shadow:var(--shadow); border:6px solid var(--white);}
+  .about-media .float-card{
+    position:absolute; bottom:-24px; left:-24px; background:var(--white);
+    border-radius:var(--r-sm); box-shadow:var(--shadow); padding:14px 18px;
+    font-family:'IBM Plex Mono',monospace; font-size:12px; display:flex; gap:10px; align-items:center;
+    border:1px solid var(--line);
+  }
+  .float-card .dot{width:9px; height:9px; border-radius:50%; background:var(--teal); animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(14,148,136,.5);}50%{box-shadow:0 0 0 6px rgba(14,148,136,0);}}
 
   .checklist{margin-top:26px; display:grid; gap:14px;}
   .checklist li{display:flex; gap:12px; align-items:flex-start; list-style:none; font-size:15px; color:var(--slate);}
@@ -289,7 +314,7 @@
   footer{background:var(--ink); color:#9FB2AD; padding:54px 0 30px;}
   .foot-grid{display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap; padding-bottom:30px; border-bottom:1px solid rgba(251,247,236,.1);}
   .foot-brand{display:flex; align-items:center; gap:10px;}
-  .foot-brand .brand-badge{width:32px; height:32px; font-size:16px;}
+  .foot-brand img{width:32px; height:32px; border-radius:50%;}
   .foot-brand span{font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--white); font-size:17px;}
   .foot-links{display:flex; gap:26px; font-size:13.5px;}
   .foot-links a:hover{color:var(--amber);}
@@ -303,6 +328,7 @@
     .hero-grid{grid-template-columns:1fr;}
     .product-shot{margin-top:20px;}
     .why-grid{grid-template-columns:1fr;}
+    .about-grid{grid-template-columns:1fr; gap:70px;}
     .navlinks{display:none;}
     .foot-grid{flex-direction:column;}
   }
@@ -313,12 +339,13 @@
 <header>
   <div class="nav">
     <div class="brand">
-      <div class="brand-badge">🦖</div>
+      <img src="assets/dyno-logo.jpg" alt="Logo DynoPOS">
       <span>DynoPOS</span>
     </div>
     <nav class="navlinks">
       <a href="#kenapa">Kenapa</a>
       <a href="#pakej">Pakej</a>
+      <a href="#produk">Produk</a>
       <a href="#industri">Industri</a>
       <a href="#tentang">Tentang</a>
     </nav>
@@ -327,6 +354,8 @@
 </header>
 
 <section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-scrim" aria-hidden="true"></div>
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow">Sistem POS untuk PKS Malaysia</span>
@@ -345,10 +374,7 @@
 
     <div class="product-shot">
       <div class="glow" aria-hidden="true"></div>
-      <div class="product-placeholder">
-        <span class="icon">🖥️</span>
-        <span>DynoPOS Terminal</span>
-      </div>
+      <img src="assets/imin-terminal.webp" alt="Terminal POS 3D DynoPOS berskrin sentuh dengan printer resit">
       <div class="product-badge"><span class="dot"></span> Jualan hari ini · Live</div>
     </div>
   </div>
@@ -399,7 +425,7 @@
 
     <div class="pakej-panel active" id="retail">
       <div class="price-receipt reveal">
-        <div class="pr-photo"><span class="icon">🏪</span></div>
+        <div class="pr-photo"><img src="assets/pkg-retail-basic.jpg" alt="Set Pakej Retail Basic DynoPOS — monitor, printer resit, cash drawer, barcode scanner"></div>
         <div class="pr-head">
           <span class="pr-eyebrow">Retail · No. 01</span>
           <h3>Retail Basic</h3>
@@ -419,7 +445,7 @@
       </div>
 
       <div class="price-receipt reveal">
-        <div class="pr-photo"><span class="icon">🏷️</span></div>
+        <div class="pr-photo"><img src="assets/pkg-retail-complete.jpg" alt="Set Pakej Retail Complete DynoPOS — lengkap dengan barcode printer"></div>
         <div class="pr-head">
           <span class="pr-eyebrow">Retail · No. 02</span>
           <h3>Retail + Barcode Printer</h3>
@@ -441,7 +467,7 @@
 
     <div class="pakej-panel" id="fnb">
       <div class="price-receipt reveal">
-        <div class="pr-photo"><span class="icon">🍽</span></div>
+        <div class="pr-photo"><img src="assets/fnb-package.jpg" alt="Terminal DynoPOS beroperasi di kaunter cafe"></div>
         <div class="pr-head">
           <span class="pr-eyebrow">F&amp;B · No. 01</span>
           <h3>F&amp;B Basic</h3>
@@ -462,7 +488,7 @@
 
       <div class="price-receipt popular reveal">
         <div class="pop-flag">Popular</div>
-        <div class="pr-photo"><span class="icon">🖥️</span></div>
+        <div class="pr-photo"><img src="assets/fnb-package-2.jpg" alt="Terminal DynoPOS single screen dengan cash drawer di kaunter cafe"></div>
         <div class="pr-head">
           <span class="pr-eyebrow">F&amp;B · No. 02</span>
           <h3>F&amp;B Single Screen</h3>
@@ -482,7 +508,7 @@
       </div>
 
       <div class="price-receipt reveal">
-        <div class="pr-photo"><span class="icon">🖥️🖥️</span></div>
+        <div class="pr-photo"><img src="assets/pkg-fnb-dual.jpg" alt="Set Pakej F&B Dual Screen DynoPOS dengan paparan pelanggan"></div>
         <div class="pr-head">
           <span class="pr-eyebrow">F&amp;B · No. 03</span>
           <h3>F&amp;B Dual Screen</h3>
@@ -503,6 +529,38 @@
     </div>
 
     <p class="price-note">* Harga tertakluk kepada pakej, lokasi pemasangan &amp; keperluan tambahan pelanggan.</p>
+  </div>
+</section>
+
+<section class="pad" id="produk" style="background:var(--paper-2);">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Produk &amp; Perkakasan</span>
+      <h2>Ini bukan mockup — ini mesin yang benar-benar terpasang di kedai</h2>
+      <p>Skrin sentuh, printer resit, cash drawer — semua siap disambung dan diuji sebelum kami serahkan kepada anda.</p>
+    </div>
+    <div class="gallery reveal">
+      <figure class="g-item g-tall">
+        <img src="assets/shop-counter.jpg" alt="Kaunter DynoPOS sedang digunakan di kedai runcit di Kelantan">
+        <figcaption>Kaunter DynoPOS beroperasi di kedai runcit</figcaption>
+      </figure>
+      <figure class="g-item">
+        <img src="assets/pos-terminal.webp" alt="Terminal skrin sentuh DynoPOS">
+        <figcaption>Terminal skrin sentuh 15"</figcaption>
+      </figure>
+      <figure class="g-item">
+        <img src="assets/dell-screen.jpg" alt="Antara muka sistem DynoPOS di kaunter kedai runcit">
+        <figcaption>Antara muka jualan — ringkas &amp; jelas</figcaption>
+      </figure>
+      <figure class="g-item">
+        <img src="assets/receipts.jpg" alt="Resit dicetak automatik oleh sistem DynoPOS">
+        <figcaption>Resit &amp; slip dapur automatik</figcaption>
+      </figure>
+      <figure class="g-item">
+        <img src="assets/imin-terminal.webp" alt="Pilihan terminal POS iMin untuk DynoPOS">
+        <figcaption>Pilihan perkakasan mengikut keperluan kedai</figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -531,6 +589,10 @@
 
 <section class="pad" id="tentang">
   <div class="wrap about-grid">
+    <div class="about-media reveal">
+      <img src="assets/shop-counter.jpg" alt="Kaunter DynoPOS sedang digunakan di kedai runcit">
+      <div class="float-card"><span class="dot"></span> Jualan hari ini dikemaskini masa nyata</div>
+    </div>
     <div class="reveal">
       <span class="kicker">Tentang Kami</span>
       <h2>Kenapa DynoPOS?</h2>
@@ -559,12 +621,13 @@
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <div class="brand-badge">🦖</div>
+        <img src="assets/dyno-logo.jpg" alt="Logo DynoPOS">
         <span>DynoPOS</span>
       </div>
       <div class="foot-links">
         <a href="#kenapa">Kenapa</a>
         <a href="#pakej">Pakej</a>
+        <a href="#produk">Produk</a>
         <a href="#industri">Industri</a>
         <a href="#tentang">Tentang</a>
       </div>
