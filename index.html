@@ -259,6 +259,28 @@
     .g-item.g-tall{grid-column:span 2; grid-row:span 2;}
   }
 
+  /* ---------- PROMO STRIPS ---------- */
+  .promo-strip{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:44px;
+  }
+  .promo-strip img{
+    width:100%; height:auto; display:block; border-radius:var(--r-md);
+    box-shadow:var(--shadow); border:1px solid var(--line);
+  }
+  .promo-banner{margin:36px auto 0; max-width:360px;}
+  .promo-banner img{
+    width:100%; height:auto; display:block; border-radius:var(--r-md);
+    box-shadow:var(--shadow); border:1px solid var(--line);
+  }
+  .brand-strip{padding:48px 0; background:var(--paper-2); text-align:center;}
+  .brand-strip img{
+    width:100%; max-width:640px; height:auto; border-radius:var(--r-md);
+    box-shadow:var(--shadow); border:1px solid var(--line);
+  }
+  @media (max-width:900px){
+    .promo-strip{grid-template-columns:1fr; }
+  }
+
   /* ---------- INDUSTRI ---------- */
   .industri-band{background:var(--ink); color:var(--paper); padding:70px 0;}
   .tag-grid{display:flex; flex-wrap:wrap; gap:12px; margin-top:30px;}
@@ -350,7 +372,7 @@
       <a href="#tentang">Tentang</a>
       <a href="#blog">Blog</a>
     </nav>
-    <a class="btn btn-primary btn-sm" href="https://www.wasap.my/60182889932/Saya%20berminat%20dengan%20DynoPOS" target="_blank" rel="noopener">WhatsApp Kami</a>
+    <a class="btn btn-primary btn-sm" href="https://www.wasap.my/601111496842/Saya%20berminat%20dengan%20DynoPOS" target="_blank" rel="noopener">WhatsApp Kami</a>
   </div>
 </header>
 
@@ -363,7 +385,7 @@
       <h1>Kira jualan,<br>bukan <em>kepala pening.</em></h1>
       <p class="lead">DynoPOS moden, mudah guna dan siap dipasang terus di kedai anda — daripada resit sampai laporan stok. Sekali bayar sahaja, tiada caj bulanan.</p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="https://www.wasap.my/60182889932/Saya%20berminat%20dengan%20DynoPOS" target="_blank" rel="noopener">💬 WhatsApp Sekarang</a>
+        <a class="btn btn-primary" href="https://www.wasap.my/601111496842/Saya%20berminat%20dengan%20DynoPOS" target="_blank" rel="noopener">💬 WhatsApp Sekarang</a>
         <a class="btn btn-ghost" href="#pakej">Tengok Pakej &amp; Harga</a>
       </div>
       <div class="hero-stats">
@@ -408,6 +430,11 @@
         <p>Ada bantuan teknikal untuk pastikan sistem terus berjalan lancar bila-bila masa anda perlukan.</p>
       </div>
     </div>
+    <div class="promo-strip reveal">
+      <img src="assets/promo-problem-solution.jpg" alt="Masalah beli sistem POS mahal tapi pekerja tak reti guna, DynoPOS sebagai penyelesaian">
+      <img src="assets/promo-setup-training.jpg" alt="DynoPOS siap pasang, setup dan training di kedai">
+      <img src="assets/promo-rm200-compare.jpg" alt="Perbandingan bayaran bulanan berbanding sekali bayar DynoPOS">
+    </div>
   </div>
 </section>
 
@@ -417,6 +444,10 @@
       <span class="kicker">Harga &amp; Pakej</span>
       <h2>Pilih pakej macam pilih resit — jelas, tiada kejutan</h2>
       <p>Harga tertakluk kepada pakej, lokasi pemasangan dan keperluan tambahan. Caj penghantaran / pemasangan luar kawasan mungkin dikenakan.</p>
+    </div>
+
+    <div class="promo-banner reveal">
+      <img src="assets/promo-pakej-tablet.jpg" alt="Promosi Pakej Tablet DynoPOS siap pasang di kedai — RM1,350 sahaja">
     </div>
 
     <div class="pricing-tabs" role="tablist" aria-label="Pilih kategori pakej">
@@ -442,7 +473,7 @@
           <li>Cetak resit automatik</li>
           <li>Setup + training di kedai</li>
         </ul>
-        <div class="pr-cta"><a href="https://www.wasap.my/60182889932/Saya%20berminat%20dengan%20pakej%20Retail%20Basic" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
+        <div class="pr-cta"><a href="https://www.wasap.my/601111496842/Saya%20berminat%20dengan%20pakej%20Retail%20Basic" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
       </div>
 
       <div class="price-receipt reveal">
@@ -462,7 +493,7 @@
           <li>Kawalan stok lebih terperinci</li>
           <li>Setup + training di kedai</li>
         </ul>
-        <div class="pr-cta"><a href="https://www.wasap.my/60182889932/Saya%20berminat%20dengan%20pakej%20Retail%20%2B%20Barcode%20Printer" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
+        <div class="pr-cta"><a href="https://www.wasap.my/601111496842/Saya%20berminat%20dengan%20pakej%20Retail%20%2B%20Barcode%20Printer" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
       </div>
     </div>
 
@@ -484,7 +515,7 @@
           <li>Urus menu &amp; harga</li>
           <li>Setup + training di kedai</li>
         </ul>
-        <div class="pr-cta"><a href="https://www.wasap.my/60182889932/Saya%20berminat%20dengan%20pakej%20F%26B%20Basic" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
+        <div class="pr-cta"><a href="https://www.wasap.my/601111496842/Saya%20berminat%20dengan%20pakej%20F%26B%20Basic" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
       </div>
 
       <div class="price-receipt popular reveal">
@@ -505,7 +536,7 @@
           <li>Laporan jualan harian</li>
           <li>Setup + training di kedai</li>
         </ul>
-        <div class="pr-cta"><a href="https://www.wasap.my/60182889932/Saya%20berminat%20dengan%20pakej%20F%26B%20Single%20Screen" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
+        <div class="pr-cta"><a href="https://www.wasap.my/601111496842/Saya%20berminat%20dengan%20pakej%20F%26B%20Single%20Screen" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
       </div>
 
       <div class="price-receipt reveal">
@@ -525,7 +556,7 @@
           <li>Rupa kaunter lebih premium</li>
           <li>Setup + training di kedai</li>
         </ul>
-        <div class="pr-cta"><a href="https://www.wasap.my/60182889932/Saya%20berminat%20dengan%20pakej%20F%26B%20Dual%20Screen" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
+        <div class="pr-cta"><a href="https://www.wasap.my/601111496842/Saya%20berminat%20dengan%20pakej%20F%26B%20Dual%20Screen" target="_blank" rel="noopener">Tanya Pakej Ini</a></div>
       </div>
     </div>
 
@@ -560,6 +591,18 @@
       <figure class="g-item">
         <img src="assets/imin-terminal.webp" alt="Pilihan terminal POS iMin untuk DynoPOS">
         <figcaption>Pilihan perkakasan mengikut keperluan kedai</figcaption>
+      </figure>
+      <figure class="g-item g-tall">
+        <img src="assets/swan-cafe-front.jpg" alt="Terminal DynoPOS beroperasi di kaunter Swan Cafe">
+        <figcaption>DynoPOS beroperasi di Swan Cafe</figcaption>
+      </figure>
+      <figure class="g-item">
+        <img src="assets/swan-cafe-back.jpg" alt="Susunan kaunter DynoPOS di Swan Cafe">
+        <figcaption>Susunan kaunter yang kemas &amp; rapi</figcaption>
+      </figure>
+      <figure class="g-item">
+        <img src="assets/retail-checkout.jpg" alt="Kaunter DynoPOS di kedai runcit dengan pelbagai kaedah pembayaran">
+        <figcaption>Sesuai untuk kedai runcit &amp; supermarket</figcaption>
       </figure>
     </div>
   </div>
@@ -607,6 +650,15 @@
         <li><span class="chk">✓</span> Support teknikal sedia membantu bila-bila masa</li>
       </ul>
     </div>
+    <div class="promo-banner reveal" style="grid-column:1/-1;">
+      <img src="assets/promo-zero-to-hero.jpg" alt="Panduan Zero to Hero POS Retail — mulakan kedai moden dengan sistem DynoPOS">
+    </div>
+  </div>
+</section>
+
+<section class="brand-strip">
+  <div class="wrap reveal">
+    <img src="assets/brand-card.jpg" alt="DynoPOS Technologies — Smart Solutions. Real Impact.">
   </div>
 </section>
 
@@ -626,7 +678,7 @@
   <div class="wrap reveal">
     <h2>Nak kedai anda lebih sistematik?</h2>
     <p>Klik WhatsApp dan team DynoPOS akan cadangkan pakej yang sesuai untuk bisnes anda — tiada kos untuk bertanya.</p>
-    <a class="btn btn-primary" href="https://www.wasap.my/60182889932/Saya%20berminat%20dengan%20DynoPOS%2C%20boleh%20cadangkan%20pakej%20sesuai%3F" target="_blank" rel="noopener">💬 Dapatkan Cadangan Pakej</a>
+    <a class="btn btn-primary" href="https://www.wasap.my/601111496842/Saya%20berminat%20dengan%20DynoPOS%2C%20boleh%20cadangkan%20pakej%20sesuai%3F" target="_blank" rel="noopener">💬 Dapatkan Cadangan Pakej</a>
   </div>
 </section>
 
