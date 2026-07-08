@@ -196,17 +196,11 @@
   .ticket .ic{font-size:26px; margin-bottom:6px; display:block;}
 
   /* ---------- PAKEJ (receipt-style pricing) ---------- */
-  .pricing-tabs{display:flex; gap:10px; margin-bottom:36px;}
-  .tab-btn{
-    padding:10px 20px; border-radius:999px; font-weight:600; font-size:14px;
-    border:1.5px solid var(--line); background:var(--white); cursor:pointer;
-    transition:all .2s;
+  .pakej-group-label{
+    font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;
+    color:var(--teal-d); margin:0 0 18px; display:flex; align-items:center; gap:8px;
   }
-  .tab-btn[aria-selected="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink);}
-  .tab-btn:focus-visible{outline:3px solid var(--amber); outline-offset:2px;}
-
-  .pakej-panel{display:none;}
-  .pakej-panel.active{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:26px;}
+  .pakej-panel{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:26px; margin-bottom:44px;}
 
   .price-receipt{
     background:var(--white); border:1px solid var(--line); border-radius:4px;
@@ -450,12 +444,8 @@
       <img src="assets/promo-pakej-tablet.jpg" alt="Promosi Pakej Tablet DynoPOS siap pasang di kedai — RM1,350 sahaja">
     </div>
 
-    <div class="pricing-tabs" role="tablist" aria-label="Pilih kategori pakej">
-      <button class="tab-btn" role="tab" aria-selected="true" data-target="retail">🏪 Retail</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-target="fnb">🍽 F&amp;B</button>
-    </div>
-
-    <div class="pakej-panel active" id="retail">
+    <h3 class="pakej-group-label">🏪 Pakej Retail</h3>
+    <div class="pakej-panel" id="retail">
       <div class="price-receipt reveal">
         <div class="pr-photo"><img src="assets/pkg-retail-basic.jpg" alt="Set Pakej Retail Basic DynoPOS — monitor, printer resit, cash drawer, barcode scanner"></div>
         <div class="pr-head">
@@ -497,6 +487,7 @@
       </div>
     </div>
 
+    <h3 class="pakej-group-label">🍽 Pakej F&amp;B</h3>
     <div class="pakej-panel" id="fnb">
       <div class="price-receipt reveal">
         <div class="pr-photo"><img src="assets/fnb-package.jpg" alt="Terminal DynoPOS beroperasi di kaunter cafe"></div>
@@ -706,17 +697,6 @@
 </footer>
 
 <script>
-  // tab switching for pakej
-  const tabs = document.querySelectorAll('.tab-btn');
-  tabs.forEach(tab=>{
-    tab.addEventListener('click', ()=>{
-      tabs.forEach(t=>t.setAttribute('aria-selected','false'));
-      tab.setAttribute('aria-selected','true');
-      document.querySelectorAll('.pakej-panel').forEach(p=>p.classList.remove('active'));
-      document.getElementById(tab.dataset.target).classList.add('active');
-    });
-  });
-
   // scroll reveal
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
