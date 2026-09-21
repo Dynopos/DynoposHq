@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>POS Tanpa Subscription | Dynopos Malaysia</title>
+  <meta name="description" content="Sistem POS Dynopos untuk retail & F&B. Sekali bayar, tiada caj subscription bulanan. Siap pemasangan, setup, training dan support." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://dynopos.my/pos-tanpa-subscription/" />
+
+  <meta property="og:title" content="POS Sekali Bayar. Tak Perlu Subscription Bulanan. | Dynopos" />
+  <meta property="og:description" content="Sistem POS untuk retail & F&B. Siap pemasangan, setup, training dan support." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dynopos.my/pos-tanpa-subscription/" />
+  <meta property="og:image" content="https://dynopos.my/assets/hero-bg.jpg" />
+  <meta property="og:locale" content="ms_MY" />
+  <meta property="og:site_name" content="Dynopos" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root{
+      --bg:#090b10;
+      --panel:#11151d;
+      --panel2:#161b25;
+      --text:#f7f8fb;
+      --muted:#aeb6c6;
+      --line:#272f3d;
+      --accent:#ff7a1a;
+      --accent2:#ff9d55;
+      --green:#27d17f;
+      --white:#fff;
+      --shadow:0 20px 70px rgba(0,0,0,.35);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 15% 5%, rgba(255,122,26,.15), transparent 34%),
+        radial-gradient(circle at 85% 25%, rgba(255,157,85,.08), transparent 28%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{text-decoration:none;color:inherit}
+    .wrap{width:min(1160px,calc(100% - 36px));margin:auto}
+    .nav{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:blur(14px);
+      background:rgba(9,11,16,.78);
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .nav-in{height:72px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:24px;letter-spacing:-.6px}
+    .brand-mark{
+      width:34px;height:34px;border-radius:11px;
+      display:grid;place-items:center;
+      overflow:hidden;
+      box-shadow:0 8px 30px rgba(255,122,26,.28);
+    }
+    .brand-mark img{width:100%;height:100%;object-fit:cover;}
+    .nav-links{display:flex;gap:25px;align-items:center;color:#d7dbe4;font-size:14px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:9px;
+      min-height:48px;padding:0 20px;border-radius:14px;font-weight:800;
+      border:1px solid transparent;transition:.2s ease;cursor:pointer;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:linear-gradient(135deg,var(--accent),#ff5c00);color:white;box-shadow:0 12px 32px rgba(255,102,0,.22)}
+    .btn-ghost{border-color:#353d4c;background:rgba(255,255,255,.03);color:#f4f6fa}
+    .hero{padding:88px 0 64px}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid rgba(255,122,26,.3);
+      background:rgba(255,122,26,.09);
+      color:#ffc69d;border-radius:999px;padding:8px 12px;
+      font-size:13px;font-weight:800;
+    }
+    .eyebrow span{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+    h1{font-size:clamp(42px,6vw,76px);line-height:.98;letter-spacing:-3.3px;margin:20px 0 20px;max-width:840px}
+    .hero h1 em{font-style:normal;color:var(--accent2)}
+    .lead{font-size:20px;color:#c1c7d3;max-width:720px;margin:0 0 28px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+    .micro{font-size:13px;color:#9199aa}
+    .trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:34px}
+    .trust{
+      padding:18px;border-radius:16px;background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.07)
+    }
+    .trust strong{display:block;font-size:23px;margin-bottom:2px}
+    .trust span{color:#9da5b4;font-size:13px}
+    .mock{
+      position:relative;padding:24px;border-radius:30px;
+      background:linear-gradient(160deg,#171c26,#0d1118);
+      border:1px solid #2b3341;box-shadow:var(--shadow);overflow:hidden
+    }
+    .mock:after{
+      content:"";position:absolute;inset:auto -90px -100px auto;width:250px;height:250px;
+      border-radius:50%;background:rgba(255,122,26,.16);filter:blur(10px)
+    }
+    .screen{
+      position:relative;z-index:1;border-radius:20px;background:#f8fafc;color:#131722;
+      padding:18px;box-shadow:0 18px 60px rgba(0,0,0,.38)
+    }
+    .screen-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .screen-logo{font-weight:950;font-size:20px;color:#171a20}
+    .live{font-size:12px;background:#e9fff2;color:#138a4b;padding:5px 8px;border-radius:999px;font-weight:800}
+    .total{font-size:42px;font-weight:950;letter-spacing:-1.8px;margin:8px 0}
+    .tiny{font-size:12px;color:#7b8391}
+    .bars{height:118px;display:flex;align-items:flex-end;gap:8px;margin:22px 0 10px}
+    .bars i{flex:1;background:linear-gradient(#ff9f5b,#ff6a00);border-radius:8px 8px 4px 4px;display:block}
+    .bars i:nth-child(1){height:36%}.bars i:nth-child(2){height:58%}.bars i:nth-child(3){height:44%}
+    .bars i:nth-child(4){height:82%}.bars i:nth-child(5){height:70%}.bars i:nth-child(6){height:94%}.bars i:nth-child(7){height:76%}
+    .receipt{
+      position:absolute;right:22px;bottom:20px;z-index:3;width:190px;
+      background:white;color:#111827;border-radius:14px;padding:16px;
+      transform:rotate(3deg);box-shadow:0 18px 44px rgba(0,0,0,.28);font-size:12px
+    }
+    .receipt hr{border:none;border-top:1px dashed #c9ced7;margin:10px 0}
+    .receipt strong{font-size:16px}
+    section{padding:76px 0}
+    .section-kicker{color:#ffae72;font-weight:850;font-size:13px;text-transform:uppercase;letter-spacing:1.1px}
+    h2{font-size:clamp(31px,4vw,52px);letter-spacing:-2px;line-height:1.08;margin:10px 0 14px}
+    .section-lead{color:#aeb6c6;max-width:760px;font-size:17px;margin:0 0 32px}
+    .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:28px}
+    .card.bad{opacity:.8}
+    .card.good{border-color:rgba(255,122,26,.5);box-shadow:0 20px 60px rgba(255,122,26,.08)}
+    .card h3{font-size:24px;margin:0 0 18px}
+    .checks{display:grid;gap:13px;margin:0;padding:0;list-style:none}
+    .checks li{display:flex;gap:11px;align-items:flex-start;color:#d5dae4}
+    .x,.ok{flex:0 0 23px;height:23px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:900;margin-top:1px}
+    .x{background:rgba(255,80,80,.12);color:#ff7777}
+    .ok{background:rgba(39,209,127,.12);color:#49dc94}
+    .calc{
+      background:linear-gradient(160deg,#131922,#0d1118);
+      border:1px solid #29313f;border-radius:26px;padding:30px;
+      display:grid;grid-template-columns:1fr .9fr;gap:26px;align-items:center
+    }
+    .calc-box{background:#0b0e14;border:1px solid #252c38;border-radius:20px;padding:22px}
+    .calc-box label{display:block;font-size:13px;color:#9ca5b4;margin-bottom:8px}
+    .calc-box input{
+      width:100%;background:#161b24;border:1px solid #323b4b;color:white;
+      border-radius:12px;padding:14px 15px;font-size:18px;font-weight:800;outline:none
+    }
+    .result{margin-top:18px;padding-top:18px;border-top:1px solid #242c39}
+    .result-big{font-size:42px;font-weight:950;color:#fff;letter-spacing:-1.6px}
+    .result-note{color:#8f98a8;font-size:12px}
+    .packages{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .pkg{position:relative}
+    .pkg.pop{border-color:rgba(255,122,26,.55)}
+    .tag{
+      position:absolute;top:16px;right:16px;border-radius:999px;padding:6px 9px;
+      background:rgba(255,122,26,.14);color:#ffb785;font-size:11px;font-weight:900
+    }
+    .pkg small{color:#8f98a8;font-weight:800;text-transform:uppercase;letter-spacing:.8px}
+    .pkg h3{margin:7px 0 10px}
+    .price{font-size:42px;font-weight:950;letter-spacing:-2px;margin:10px 0 4px}
+    .once{color:#9ba3b3;font-size:13px}
+    .pkg ul{padding-left:19px;color:#ccd2dc;min-height:136px}
+    .pkg .btn{width:100%;margin-top:8px}
+    .industries{display:flex;flex-wrap:wrap;gap:10px}
+    .pill{border:1px solid #2d3543;background:#111720;color:#d7dce5;padding:10px 14px;border-radius:999px;font-size:14px}
+    .faq{display:grid;gap:12px;max-width:860px}
+    details{border:1px solid #28303e;border-radius:16px;background:#10151d;padding:18px 20px}
+    summary{cursor:pointer;font-weight:850}
+    details p{color:#aeb6c6;margin-bottom:2px}
+    .cta{
+      text-align:center;padding:48px 30px;border-radius:30px;
+      background:
+        radial-gradient(circle at 50% 120%, rgba(255,122,26,.28), transparent 48%),
+        #121720;
+      border:1px solid #2f3745
+    }
+    .cta p{color:#aeb6c6;max-width:690px;margin:0 auto 24px}
+    footer{padding:34px 0 110px;color:#777f8e;font-size:13px}
+    .footer-in{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid #242b36;padding-top:24px}
+    .mobile-cta{
+      display:none;position:fixed;bottom:0;left:0;right:0;z-index:70;padding:10px 14px;
+      background:rgba(9,11,16,.92);backdrop-filter:blur(14px);border-top:1px solid #2a313d
+    }
+    .mobile-cta .btn{width:100%}
+    .note-box{font-size:12px;color:#8f98a8;margin-top:13px}
+    @media(max-width:900px){
+      .nav-links a:not(.btn){display:none}
+      .hero{padding-top:56px}
+      .hero-grid,.calc{grid-template-columns:1fr}
+      .mock{max-width:620px}
+      .packages{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:640px){
+      .wrap{width:min(100% - 24px,1160px)}
+      .nav-in{height:64px}
+      .brand{font-size:21px}
+      .nav-links .btn{display:none}
+      h1{letter-spacing:-2.1px}
+      .lead{font-size:17px}
+      .hero-actions .btn{width:100%}
+      .trust-row{grid-template-columns:1fr}
+      .compare,.packages{grid-template-columns:1fr}
+      section{padding:58px 0}
+      .card{padding:22px}
+      .receipt{position:relative;right:auto;bottom:auto;width:100%;transform:none;margin-top:14px}
+      .mobile-cta{display:block}
+      footer{padding-bottom:100px}
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Dynopos ada caj bulanan?","acceptedAnswer":{"@type":"Answer","text":"Pakej utama Dynopos adalah sekali bayar tanpa caj subscription bulanan."}},
+      {"@type":"Question","name":"Adakah pemasangan dan training disediakan?","acceptedAnswer":{"@type":"Answer","text":"Ya. Pakej terpilih termasuk setup dan training di kedai, tertakluk kepada lokasi pemasangan."}},
+      {"@type":"Question","name":"Dynopos sesuai untuk bisnes apa?","acceptedAnswer":{"@type":"Answer","text":"Dynopos menyediakan pilihan untuk retail dan F&B termasuk kedai runcit, mini market, butik, hardware, cafe, restoran dan warung."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "DynoPOS", "item": "https://dynopos.my/"},
+      {"@type": "ListItem", "position": 2, "name": "Sistem POS Malaysia", "item": "https://dynopos.my/pos-system-malaysia/"},
+      {"@type": "ListItem", "position": 3, "name": "POS Tanpa Subscription", "item": "https://dynopos.my/pos-tanpa-subscription/"}
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="wrap nav-in">
+      <a href="/" class="brand">
+        <span class="brand-mark"><img src="/assets/dyno-logo.jpg" alt="Logo DynoPOS"></span>
+        Dynopos
+      </a>
+      <div class="nav-links">
+        <a href="#kenapa">Kenapa Dynopos</a>
+        <a href="#harga">Harga</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn btn-primary" href="https://wa.me/601111496842?text=Saya%20berminat%20dengan%20Dynopos%20POS%20tanpa%20subscription" target="_blank" rel="noopener">WhatsApp Sekarang</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><span></span> POS SYSTEM UNTUK PKS MALAYSIA</div>
+        <h1>POS sekali bayar.<br><em>Tak perlu subscription bulanan.</em></h1>
+        <p class="lead">Beli sistem yang bantu anda berniaga — bukan bil yang datang setiap bulan. Dynopos siap dengan pemasangan, setup, training dan support.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://wa.me/601111496842?text=Saya%20nak%20cadangan%20pakej%20Dynopos%20tanpa%20subscription" target="_blank" rel="noopener">💬 Dapatkan Cadangan Pakej</a>
+          <a class="btn btn-ghost" href="#harga">Lihat Harga ↓</a>
+        </div>
+        <div class="micro">Tiada kos untuk bertanya • Harga bergantung kepada pakej, lokasi & keperluan pemasangan</div>
+
+        <div class="trust-row">
+          <div class="trust"><strong>8,600+</strong><span>Pelanggan sedia ada</span></div>
+          <div class="trust"><strong>1× Bayar</strong><span>Tiada subscription bulanan</span></div>
+          <div class="trust"><strong>Siap Pasang</strong><span>Setup + training di kedai</span></div>
+        </div>
+      </div>
+
+      <div class="mock" aria-label="Ilustrasi sistem POS Dynopos">
+        <div class="screen">
+          <div class="screen-top">
+            <div class="screen-logo">Dynopos</div>
+            <div class="live">● LIVE</div>
+          </div>
+          <div class="tiny">Jualan hari ini</div>
+          <div class="total">RM 4,280</div>
+          <div class="tiny">Ringkas. Jelas. Senang staff guna.</div>
+          <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="receipt">
+          <strong>DYNO MART</strong><br>
+          <span class="tiny">Resit jualan</span>
+          <hr>
+          Air Mineral <span style="float:right">2.00</span><br>
+          Roti <span style="float:right">3.50</span><br>
+          Kopi <span style="float:right">4.00</span>
+          <hr>
+          <strong>JUMLAH <span style="float:right">RM9.50</span></strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="kenapa">
+    <div class="wrap">
+      <div class="section-kicker">Masalah sebenar</div>
+      <h2>Kenapa masih bayar setiap bulan untuk sistem kaunter?</h2>
+      <p class="section-lead">Untuk ramai peniaga kecil dan sederhana, subscription yang nampak kecil boleh menjadi kos tetap bertahun-tahun. Dynopos mengambil pendekatan yang lebih mudah: pilih pakej, bayar sekali, terus guna.</p>
+
+      <div class="compare">
+        <div class="card bad">
+          <h3>Model subscription biasa</h3>
+          <ul class="checks">
+            <li><span class="x">×</span><span>Caj berulang setiap bulan / tahun</span></li>
+            <li><span class="x">×</span><span>Kos terkumpul semakin besar semakin lama anda guna</span></li>
+            <li><span class="x">×</span><span>Boleh menambah komitmen tetap operasi kedai</span></li>
+            <li><span class="x">×</span><span>Sukar jangka jumlah kos penggunaan jangka panjang</span></li>
+          </ul>
+        </div>
+
+        <div class="card good">
+          <h3>Dynopos — sekali bayar</h3>
+          <ul class="checks">
+            <li><span class="ok">✓</span><span>Tiada caj subscription bulanan untuk pakej utama</span></li>
+            <li><span class="ok">✓</span><span>Setup sistem mengikut operasi kedai</span></li>
+            <li><span class="ok">✓</span><span>Training untuk staff selepas pemasangan</span></li>
+            <li><span class="ok">✓</span><span>Support teknikal selepas pemasangan</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="calc">
+        <div>
+          <div class="section-kicker">Kira sendiri</div>
+          <h2>RM150 sebulan nampak kecil. Sampai anda kira 3 tahun.</h2>
+          <p class="section-lead" style="margin-bottom:0">Masukkan contoh caj subscription bulanan untuk lihat jumlah yang dibayar selepas 36 bulan.</p>
+        </div>
+        <div class="calc-box">
+          <label for="monthly">Contoh subscription bulanan (RM)</label>
+          <input id="monthly" type="number" min="0" step="10" value="150">
+          <div class="result">
+            <div class="tiny">Jumlah selepas 36 bulan</div>
+            <div id="threeYear" class="result-big">RM5,400</div>
+            <div id="vsBasic" style="font-weight:850;color:#55db99;margin-top:4px">RM4,050 lebih tinggi daripada Retail Basic RM1,350</div>
+            <div class="result-note">Perbandingan kasar berdasarkan nilai subscription yang anda masukkan. Caj hardware, pemasangan dan ciri vendor lain mungkin berbeza.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="harga">
+    <div class="wrap">
+      <div class="section-kicker">Harga jelas</div>
+      <h2>Pilih ikut jenis kedai. Bukan ikut berapa lama anda berniaga.</h2>
+      <p class="section-lead">Antara pakej semasa Dynopos. Harga tertakluk kepada lokasi pemasangan dan keperluan tambahan.</p>
+
+      <div class="packages">
+        <article class="card pkg pop">
+          <span class="tag">Retail</span>
+          <small>Retail · No. 01</small>
+          <h3>Retail Basic</h3>
+          <div class="price">RM1,350</div>
+          <div class="once">sekali bayar</div>
+          <ul>
+            <li>Sistem kaunter jualan lengkap</li>
+            <li>Urus stok & produk</li>
+            <li>Cetak resit automatik</li>
+            <li>Setup + training di kedai</li>
+          </ul>
+          <a class="btn btn-primary" target="_blank" rel="noopener" href="https://wa.me/601111496842?text=Saya%20berminat%20Retail%20Basic%20RM1350">Tanya Pakej Ini</a>
+        </article>
+
+        <article class="card pkg">
+          <span class="tag">Retail</span>
+          <small>Retail · No. 02</small>
+          <h3>Retail + Barcode</h3>
+          <div class="price">RM1,650</div>
+          <div class="once">sekali bayar</div>
+          <ul>
+            <li>Semua dalam Retail Basic</li>
+            <li>Printer label barcode</li>
+            <li>Kawalan stok lebih terperinci</li>
+            <li>Setup + training di kedai</li>
+          </ul>
+          <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://wa.me/601111496842?text=Saya%20berminat%20Retail%20%2B%20Barcode%20RM1650">Tanya Pakej Ini</a>
+        </article>
+
+        <article class="card pkg">
+          <span class="tag">F&B</span>
+          <small>F&amp;B · No. 01</small>
+          <h3>Single Screen 58mm</h3>
+          <div class="price">RM1,450</div>
+          <div class="once">sekali bayar</div>
+          <ul>
+            <li>Sistem order & kaunter Android</li>
+            <li>Printer resit 58mm</li>
+            <li>Cash drawer 5 slot heavy duty</li>
+            <li>Setup + training di kedai</li>
+          </ul>
+          <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://wa.me/601111496842?text=Saya%20berminat%20F%26B%20Single%20Screen%2058mm%20RM1450">Tanya Pakej Ini</a>
+        </article>
+
+        <article class="card pkg">
+          <span class="tag">F&B</span>
+          <small>F&amp;B · No. 02</small>
+          <h3>Single Screen 80mm</h3>
+          <div class="price">RM1,750</div>
+          <div class="once">sekali bayar</div>
+          <ul>
+            <li>Semua dalam Single Screen 58mm</li>
+            <li>Printer resit 80mm</li>
+            <li>Laporan jualan harian</li>
+            <li>Setup + training di kedai</li>
+          </ul>
+          <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://wa.me/601111496842?text=Saya%20berminat%20F%26B%20Single%20Screen%2080mm%20RM1750">Tanya Pakej Ini</a>
+        </article>
+
+        <article class="card pkg pop">
+          <span class="tag">Premium</span>
+          <small>F&amp;B · No. 03</small>
+          <h3>Dual Screen</h3>
+          <div class="price">RM2,650</div>
+          <div class="once">sekali bayar</div>
+          <ul>
+            <li>Semua dalam Single Screen</li>
+            <li>Skrin paparan pelanggan</li>
+            <li>Rupa kaunter lebih premium</li>
+            <li>Setup + training di kedai</li>
+          </ul>
+          <a class="btn btn-primary" target="_blank" rel="noopener" href="https://wa.me/601111496842?text=Saya%20berminat%20F%26B%20Dual%20Screen%20RM2650">Tanya Pakej Ini</a>
+        </article>
+
+        <article class="card pkg">
+          <small>Tak pasti?</small>
+          <h3>Kami cadangkan ikut operasi kedai</h3>
+          <div style="font-size:19px;font-weight:850;margin:18px 0 11px">Beritahu jenis bisnes, lokasi dan keperluan anda.</div>
+          <p style="color:#9ea7b6;min-height:136px">Team Dynopos akan cadangkan pakej yang sesuai — tanpa paksa anda ambil setup yang tak perlu.</p>
+          <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://wa.me/601111496842?text=Saya%20tak%20pasti%20pakej%20mana%20sesuai.%20Boleh%20cadangkan%3F">Minta Cadangan</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-kicker">Sesuai untuk</div>
+      <h2>Satu sistem untuk operasi kedai yang lebih tersusun.</h2>
+      <p class="section-lead">Retail atau F&amp;B — pilih setup yang sepadan dengan cara anda berniaga.</p>
+      <div class="industries">
+        <span class="pill">🏪 Kedai Runcit</span>
+        <span class="pill">🛒 Mini Market</span>
+        <span class="pill">👕 Butik</span>
+        <span class="pill">🔨 Kedai Hardware</span>
+        <span class="pill">💄 Kosmetik</span>
+        <span class="pill">🍽 Restoran</span>
+        <span class="pill">☕ Cafe</span>
+        <span class="pill">🍜 Warung</span>
+        <span class="pill">🍱 Food Court</span>
+        <span class="pill">🛍 Retail Lain</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-kicker">FAQ</div>
+      <h2>Soalan yang biasa peniaga tanya.</h2>
+      <div class="faq">
+        <details open>
+          <summary>Betul ke tak ada caj bulanan?</summary>
+          <p>Ya. Pakej utama Dynopos di halaman ini adalah sekali bayar tanpa caj subscription bulanan. Servis tambahan tertentu, jika dipilih, boleh mempunyai caj berasingan.</p>
+        </details>
+        <details>
+          <summary>Harga termasuk mesin sekali?</summary>
+          <p>Pakej yang disenaraikan merangkumi set dan ciri seperti dinyatakan pada setiap pakej. Team Dynopos akan sahkan spesifikasi akhir sebelum tempahan.</p>
+        </details>
+        <details>
+          <summary>Ada pemasangan dan training?</summary>
+          <p>Ya, setup dan training disediakan untuk pakej terpilih. Caj atau aturan pemasangan luar kawasan mungkin berbeza mengikut lokasi.</p>
+        </details>
+        <details>
+          <summary>Kalau kedai saya jauh?</summary>
+          <p>Hubungi team Dynopos dengan lokasi kedai. Kami akan semak kaedah pemasangan atau penghantaran yang tersedia untuk kawasan anda.</p>
+        </details>
+        <details>
+          <summary>Sesuai untuk retail atau kedai makan?</summary>
+          <p>Kedua-duanya. Terdapat pakej khusus retail dan F&amp;B supaya setup lebih sesuai dengan aliran kerja kedai.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta">
+        <div class="section-kicker">Sebelum anda bayar subscription lagi sebulan</div>
+        <h2 style="max-width:760px;margin-left:auto;margin-right:auto">Tanya dulu berapa kos POS sekali bayar untuk kedai anda.</h2>
+        <p>Beritahu jenis bisnes dan lokasi. Team Dynopos akan cadangkan setup yang sesuai dan harga sebenar sebelum anda buat keputusan.</p>
+        <a class="btn btn-primary" target="_blank" rel="noopener" href="https://wa.me/601111496842?text=Saya%20datang%20dari%20landing%20page%20POS%20tanpa%20subscription.%20Saya%20nak%20cadangan%20pakej.">💬 WhatsApp Dynopos Sekarang</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap footer-in">
+      <div>© 2026 Dynopos Technologies. Sistem POS untuk PKS Malaysia.</div>
+      <div>Harga tertakluk kepada pakej, lokasi pemasangan & keperluan tambahan.</div>
+    </div>
+  </footer>
+
+  <div class="mobile-cta">
+    <a class="btn btn-primary" target="_blank" rel="noopener" href="https://wa.me/601111496842?text=Saya%20berminat%20dengan%20Dynopos%20POS%20tanpa%20subscription">💬 WhatsApp — Tanya Pakej</a>
+  </div>
+
+  <script>
+    const monthly = document.getElementById('monthly');
+    const threeYear = document.getElementById('threeYear');
+    const vsBasic = document.getElementById('vsBasic');
+    const basic = 1350;
+
+    function money(n){
+      return 'RM' + Math.max(0,n).toLocaleString('en-MY', {maximumFractionDigits:0});
+    }
+    function calc(){
+      const m = Number(monthly.value || 0);
+      const total = m * 36;
+      const diff = total - basic;
+      threeYear.textContent = money(total);
+      if(diff > 0){
+        vsBasic.textContent = money(diff) + ' lebih tinggi daripada Retail Basic RM1,350';
+        vsBasic.style.color = '#55db99';
+      } else if(diff < 0){
+        vsBasic.textContent = money(Math.abs(diff)) + ' lebih rendah daripada Retail Basic RM1,350';
+        vsBasic.style.color = '#ffb785';
+      } else {
+        vsBasic.textContent = 'Sama dengan harga Retail Basic RM1,350';
+        vsBasic.style.color = '#d9dee8';
+      }
+    }
+    monthly.addEventListener('input', calc);
+    calc();
+  </script>
+</body>
+</html>

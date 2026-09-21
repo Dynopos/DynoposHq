@@ -71,6 +71,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://dynopos.my/pos-tanpa-subscription/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://dynopos.my/feedback.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
